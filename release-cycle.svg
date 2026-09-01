@@ -1,0 +1,166 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 430" width="100%" role="img" aria-label="RenkuOS release model: a rolling trunk with nightly and weekly builds, and two dated releases a year, each preceded by a one-month stabilisation freeze taking bugfix cherry-picks only.">
+<style>
+  .panel{fill:#F1F4F4}
+  .title{fill:#132020}
+  .sub,.axis{fill:#3B4A49}
+  .muted{fill:#6A7978}
+  .grid{stroke:#D9DFDE;stroke-width:1}
+  .trunk{stroke:#3B4A49;stroke-width:2.5;stroke-linecap:round}
+  .tick{fill:#A9B5B4}
+  .wk{fill:#0E6A62}
+  .brline{stroke:#8F5A08;stroke-width:2.2;fill:none;stroke-linecap:round}
+  .frz{fill:#8F5A08;fill-opacity:.10}
+  .frzedge{stroke:#8F5A08;stroke-opacity:.35;stroke-width:1;stroke-dasharray:3 3}
+  .frztext{fill:#8F5A08}
+  .cp{stroke:#8F5A08;stroke-width:1.4;fill:none;stroke-opacity:.75}
+  .cphead{fill:#8F5A08;fill-opacity:.75}
+  .relring{fill:#0E6A62}
+  .relcore{fill:#F1F4F4}
+  .relnum{fill:#0E6A62}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515}
+    .title{fill:#E3EAE9}
+    .sub,.axis{fill:#ADBCBA}
+    .muted{fill:#7C8C8A}
+    .grid{stroke:#2A3535}
+    .trunk{stroke:#ADBCBA}
+    .tick{fill:#4A5857}
+    .wk{fill:#4FB6AA}
+    .brline{stroke:#D5A244}
+    .frz{fill:#D5A244;fill-opacity:.13}
+    .frzedge{stroke:#D5A244;stroke-opacity:.4}
+    .frztext{fill:#D5A244}
+    .cp{stroke:#D5A244}
+    .cphead{fill:#D5A244}
+    .relring{fill:#4FB6AA}
+    .relcore{fill:#0E1515}
+    .relnum{fill:#4FB6AA}
+  }
+</style>
+<defs><pattern id="nightly" width="4.2" height="11" patternUnits="userSpaceOnUse"><rect x="0" y="0" width="1.15" height="11" class="tick"/></pattern></defs>
+<rect x="0" y="0" width="1200" height="430" rx="12" class="panel"/>
+<text x="40" y="50" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="21" font-weight="600" class="title">Rolling trunk, two releases a year</text>
+<text x="40" y="76" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="13.5" class="sub">Nightly and weekly builds roll off trunk continuously. Two dated releases a year, each preceded by a one-month freeze.</text>
+<text x="1160" y="76" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="12" letter-spacing="1.2" class="muted">2027</text>
+<rect x="188.3" y="136" width="88.3" height="168" class="frz"/>
+<line x1="188.3" y1="136" x2="188.3" y2="304" class="frzedge"/>
+<line x1="276.7" y1="136" x2="276.7" y2="304" class="frzedge"/>
+<text x="232.5" y="153" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="1.4" class="frztext">FREEZE</text>
+<rect x="718.3" y="136" width="88.3" height="168" class="frz"/>
+<line x1="718.3" y1="136" x2="718.3" y2="304" class="frzedge"/>
+<line x1="806.7" y1="136" x2="806.7" y2="304" class="frzedge"/>
+<text x="762.5" y="153" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="9.5" font-weight="600" letter-spacing="1.4" class="frztext">FREEZE</text>
+<line x1="100.0" y1="136" x2="100.0" y2="304" class="grid"/>
+<line x1="188.3" y1="136" x2="188.3" y2="304" class="grid"/>
+<line x1="276.7" y1="136" x2="276.7" y2="304" class="grid"/>
+<line x1="365.0" y1="136" x2="365.0" y2="304" class="grid"/>
+<line x1="453.3" y1="136" x2="453.3" y2="304" class="grid"/>
+<line x1="541.7" y1="136" x2="541.7" y2="304" class="grid"/>
+<line x1="630.0" y1="136" x2="630.0" y2="304" class="grid"/>
+<line x1="718.3" y1="136" x2="718.3" y2="304" class="grid"/>
+<line x1="806.7" y1="136" x2="806.7" y2="304" class="grid"/>
+<line x1="895.0" y1="136" x2="895.0" y2="304" class="grid"/>
+<line x1="983.3" y1="136" x2="983.3" y2="304" class="grid"/>
+<line x1="1071.7" y1="136" x2="1071.7" y2="304" class="grid"/>
+<line x1="1160.0" y1="136" x2="1160.0" y2="304" class="grid"/>
+<text x="144.2" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Jan</text>
+<text x="232.5" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Feb</text>
+<text x="320.8" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Mar</text>
+<text x="409.2" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Apr</text>
+<text x="497.5" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">May</text>
+<text x="585.8" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Jun</text>
+<text x="674.2" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Jul</text>
+<text x="762.5" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Aug</text>
+<text x="850.8" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Sep</text>
+<text x="939.2" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Oct</text>
+<text x="1027.5" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Nov</text>
+<text x="1115.8" y="123" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" letter-spacing=".6" class="muted">Dec</text>
+<rect x="100" y="156" width="1060" height="11" fill="url(#nightly)"/>
+<line x1="100" y1="170" x2="1160" y2="170" class="trunk"/>
+<text x="86" y="174" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="11.5" font-weight="500" class="axis">trunk</text>
+<circle cx="110.2" cy="170" r="2.9" class="wk"/>
+<circle cx="130.6" cy="170" r="2.9" class="wk"/>
+<circle cx="151.0" cy="170" r="2.9" class="wk"/>
+<circle cx="171.3" cy="170" r="2.9" class="wk"/>
+<circle cx="191.7" cy="170" r="2.9" class="wk"/>
+<circle cx="212.1" cy="170" r="2.9" class="wk"/>
+<circle cx="232.5" cy="170" r="2.9" class="wk"/>
+<circle cx="252.9" cy="170" r="2.9" class="wk"/>
+<circle cx="273.3" cy="170" r="2.9" class="wk"/>
+<circle cx="293.7" cy="170" r="2.9" class="wk"/>
+<circle cx="314.0" cy="170" r="2.9" class="wk"/>
+<circle cx="334.4" cy="170" r="2.9" class="wk"/>
+<circle cx="354.8" cy="170" r="2.9" class="wk"/>
+<circle cx="375.2" cy="170" r="2.9" class="wk"/>
+<circle cx="395.6" cy="170" r="2.9" class="wk"/>
+<circle cx="416.0" cy="170" r="2.9" class="wk"/>
+<circle cx="436.3" cy="170" r="2.9" class="wk"/>
+<circle cx="456.7" cy="170" r="2.9" class="wk"/>
+<circle cx="477.1" cy="170" r="2.9" class="wk"/>
+<circle cx="497.5" cy="170" r="2.9" class="wk"/>
+<circle cx="517.9" cy="170" r="2.9" class="wk"/>
+<circle cx="538.3" cy="170" r="2.9" class="wk"/>
+<circle cx="558.7" cy="170" r="2.9" class="wk"/>
+<circle cx="579.0" cy="170" r="2.9" class="wk"/>
+<circle cx="599.4" cy="170" r="2.9" class="wk"/>
+<circle cx="619.8" cy="170" r="2.9" class="wk"/>
+<circle cx="640.2" cy="170" r="2.9" class="wk"/>
+<circle cx="660.6" cy="170" r="2.9" class="wk"/>
+<circle cx="681.0" cy="170" r="2.9" class="wk"/>
+<circle cx="701.3" cy="170" r="2.9" class="wk"/>
+<circle cx="721.7" cy="170" r="2.9" class="wk"/>
+<circle cx="742.1" cy="170" r="2.9" class="wk"/>
+<circle cx="762.5" cy="170" r="2.9" class="wk"/>
+<circle cx="782.9" cy="170" r="2.9" class="wk"/>
+<circle cx="803.3" cy="170" r="2.9" class="wk"/>
+<circle cx="823.7" cy="170" r="2.9" class="wk"/>
+<circle cx="844.0" cy="170" r="2.9" class="wk"/>
+<circle cx="864.4" cy="170" r="2.9" class="wk"/>
+<circle cx="884.8" cy="170" r="2.9" class="wk"/>
+<circle cx="905.2" cy="170" r="2.9" class="wk"/>
+<circle cx="925.6" cy="170" r="2.9" class="wk"/>
+<circle cx="946.0" cy="170" r="2.9" class="wk"/>
+<circle cx="966.3" cy="170" r="2.9" class="wk"/>
+<circle cx="986.7" cy="170" r="2.9" class="wk"/>
+<circle cx="1007.1" cy="170" r="2.9" class="wk"/>
+<circle cx="1027.5" cy="170" r="2.9" class="wk"/>
+<circle cx="1047.9" cy="170" r="2.9" class="wk"/>
+<circle cx="1068.3" cy="170" r="2.9" class="wk"/>
+<circle cx="1088.7" cy="170" r="2.9" class="wk"/>
+<circle cx="1109.0" cy="170" r="2.9" class="wk"/>
+<circle cx="1129.4" cy="170" r="2.9" class="wk"/>
+<circle cx="1149.8" cy="170" r="2.9" class="wk"/>
+<path d="M 188.3,170 C 202.3,170 194.3,280 230.3,280 H 276.7" class="brline"/>
+<text x="178.3" y="196" text-anchor="end" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10.5" class="muted">cut 1 Feb</text>
+<path d="M 240.8,179 C 240.8,222 249.8,228 249.8,268" class="cp"/>
+<path d="M 246.4,268 L 253.2,268 L 249.8,275 Z" class="cphead"/>
+<path d="M 252.8,179 C 252.8,222 261.8,228 261.8,268" class="cp"/>
+<path d="M 258.4,268 L 265.2,268 L 261.8,275 Z" class="cphead"/>
+<text x="253.5" y="301" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10.5" class="muted">stabilisation branch</text>
+<circle cx="276.7" cy="280" r="7.5" class="relring"/>
+<circle cx="276.7" cy="280" r="3.4" class="relcore"/>
+<text x="291.7" y="282" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15.5" font-weight="600" class="relnum">27.3</text>
+<text x="291.7" y="298" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" letter-spacing=".9" class="muted">RELEASE</text>
+<path d="M 718.3,170 C 732.3,170 724.3,280 760.3,280 H 806.7" class="brline"/>
+<text x="708.3" y="196" text-anchor="end" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10.5" class="muted">cut 1 Aug</text>
+<path d="M 770.8,179 C 770.8,222 779.8,228 779.8,268" class="cp"/>
+<path d="M 776.4,268 L 783.2,268 L 779.8,275 Z" class="cphead"/>
+<path d="M 782.8,179 C 782.8,222 791.8,228 791.8,268" class="cp"/>
+<path d="M 788.4,268 L 795.2,268 L 791.8,275 Z" class="cphead"/>
+<text x="783.5" y="301" text-anchor="middle" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10.5" class="muted">bugfix cherry-picks only</text>
+<circle cx="806.7" cy="280" r="7.5" class="relring"/>
+<circle cx="806.7" cy="280" r="3.4" class="relcore"/>
+<text x="821.7" y="282" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, 'Liberation Mono', monospace" font-size="15.5" font-weight="600" class="relnum">27.9</text>
+<text x="821.7" y="298" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="10" letter-spacing=".9" class="muted">RELEASE</text>
+<rect x="100" y="366" width="26" height="11" fill="url(#nightly)"/>
+<text x="134.0" y="376" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" class="muted">nightly build</text>
+<circle cx="348" cy="372" r="3.4" class="wk"/>
+<text x="360.0" y="376" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" class="muted">weekly promoted build</text>
+<rect x="530" y="365" width="24" height="13" rx="2" class="frz"/>
+<rect x="530" y="365" width="24" height="13" rx="2" class="frzedge" fill="none"/>
+<text x="562.0" y="376" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" class="muted">one-month freeze</text>
+<circle cx="722" cy="372" r="6" class="relring"/>
+<circle cx="722" cy="372" r="2.7" class="relcore"/>
+<text x="734.0" y="376" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11.5" class="muted">dated release · YY.M</text>
+<text x="100" y="402" font-family="ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="11" class="muted">Security fixes land on trunk and the open freeze branch immediately. Release go/no-go is a checklist, not a vote.</text>
+</svg>
