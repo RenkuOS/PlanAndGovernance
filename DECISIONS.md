@@ -1,4 +1,4 @@
-<img src="assets/logo.png" alt="RenkuOS" width="260">
+<img src="assets/logo_v0.2.png" alt="RenkuOS" width="260">
 
 # Decision Log
 Status: **draft for comment.**
