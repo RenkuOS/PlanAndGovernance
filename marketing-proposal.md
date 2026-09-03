@@ -1,5 +1,5 @@
 <!-- ahoy -->
-<img src="assets/logo_v0.3.png" alt="RenkuOS" width="260">
+<img src="assets/logo_v0.2.png" alt="RenkuOS" width="260">
 
 # Proposal: the communications document set
 
