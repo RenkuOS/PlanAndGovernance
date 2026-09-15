@@ -14,6 +14,54 @@ The decisions this document depends on are recorded in [`DECISIONS.md`](DECISION
 
 ---
 
+## Current state
+
+**As of 2026-09-15.** The repository has landed, so part of this document is now real and
+part is still the plan. This section is the real part.
+
+**Where the code is.** [`RenkuOS/Source`](https://github.com/RenkuOS/Source), branch `main`.
+
+**How a change lands.** You cannot push to `main` — every change goes through a pull request,
+and that applies to admins too. One approval merges it. Your own approval never counts
+toward your own change, and an approval is dropped if you push again afterwards.
+
+**Who can approve.** Four people hold write access today. An approval from anyone else —
+including organisation members with read access — is worth having but does not satisfy the
+gate. Nobody is assigned to your change automatically: `MAINTAINERS` and `CODEOWNERS` do not
+exist yet, so if you need a particular pair of eyes, say so in the pull request.
+
+**What CI checks.** `policy checks`, `build x86_64` and `boot x86_64` must all pass before a
+merge is possible. Note the architecture: **x86 is not currently built or booted**. Tier 1
+still means both 32- and 64-bit as policy (D4), but the 32-bit gate is suspended — see
+[`REVIEW.md`](REVIEW.md) Current state for why.
+
+**What will block your pull request:**
+
+- A commit without `Signed-off-by:` — use `git commit -s`
+- A new file without an SPDX identifier
+- More than 1,000 changed lines, unless someone applies the `oversize-approved` label
+- Touching more than two subsystems
+- `clang-format` differences on lines you changed
+- `Ported-from:` without `Ported-from-license:`, or the reverse
+
+**What will only warn you:** a subject line of 72 characters or more, and a subject with no
+`subsystem: ` prefix. Both are still worth getting right.
+
+**What is not wired up yet.** `@council stalled` is a convention, not a mechanism — commenting
+it notifies nobody automatically today. The build and run commands below are still
+placeholders; see [Before this goes live](#before-this-goes-live).
+
+---
+
+## Proposed future state
+
+Everything below describes how the project intends to work. Much of it is already true —
+the commit trailers, the size caps and the formatting rules above are enforced right now.
+Where this document and the Current state section disagree, the section above is what is
+actually happening.
+
+---
+
 ## You do not have to write C++ to be useful
 
 Roughly half the work this project needs is not kernel code, and none of it is a lesser
@@ -145,6 +193,10 @@ can break — the full table is [`REVIEW.md`](REVIEW.md) §3, and briefly:
 For a bugfix, the standard is a test that would have caught the bug.
 
 ### Then what
+
+> **Not in force.** No reviewer is assigned automatically yet — `MAINTAINERS` and
+> `CODEOWNERS` do not exist. Name a reviewer yourself, or say in the pull request that you
+> need one. See Current state above.
 
 - A reviewer is assigned automatically from `MAINTAINERS` based on the paths you touched. Many
   areas are still marked `unowned` — we are a small project and not pretending otherwise — and

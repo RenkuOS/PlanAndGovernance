@@ -12,6 +12,74 @@ a policy surface larger than its codebase.
 
 ---
 
+## Current state
+
+**As of 2026-09-15.** This section records what is actually true and mechanically enforced
+today. It is the part of this document you can rely on; everything after it is the standard
+we intend to reach.
+
+The tree is live at [`RenkuOS/Source`](https://github.com/RenkuOS/Source) and `main` is
+protected. On every pull request the forge enforces:
+
+| Rule | Enforced today | Where |
+|---|---|---|
+| A pull request is required to change `main` | Yes | Branch protection |
+| Approvals required | **1**, from an account with write access | Branch protection |
+| An author cannot approve their own change | Yes | GitHub behaviour |
+| Approvals dismissed when new commits land | Yes | Branch protection |
+| The most recent push must itself be approved | Yes | Branch protection |
+| Force-push and branch deletion | Blocked | Branch protection |
+| Review threads resolved before merge | Yes | Branch protection |
+| Admins bound by all of the above | Yes | Branch protection |
+| Green CI before merge | Yes — `policy checks`, `build x86_64`, `boot x86_64` | Branch protection |
+| `Signed-off-by:` on every commit (§1.1) | Yes, blocking | `lint.yml` |
+| `Ported-from:` / `Ported-from-license:` paired (§1.3) | Yes, blocking | `lint.yml` |
+| SPDX identifier on new files | Yes, blocking | `lint.yml` |
+| 1,000-line cap (§2) | Yes, blocking — `oversize-approved` label overrides | `lint.yml` |
+| Two-subsystem cap (§2) | Yes, blocking | `lint.yml` |
+| `clang-format` on changed lines | Yes, blocking | `lint.yml` |
+| Subject under 72 chars with a `subsystem:` prefix | Warning only | `lint.yml` |
+| `Assisted-by:` non-empty where present (§1.2) | Warning only | `lint.yml` |
+
+### Who can approve today
+
+An approval only counts if it comes from an account with **write** access. That is currently
+four people: `KevinAdams05`, `rainygirl`, `atomozero` and `RenkuOSAdmin`. `tmtfx` and
+`ilfelice` are organisation members with read access — they can review and comment, and that
+review is worth having, but it does not satisfy the gate. Raising them to write is a one-line
+change whenever the project wants it.
+
+### What is not enforced yet
+
+Four gaps, stated here so they are countable rather than discovered during an argument:
+
+- **The §3 approval scale.** GitHub's required-approval count is a single global number; it
+  cannot vary by path. The gate is **1** for every change, so the graduated table in §3 and
+  the two-approval rule in §4 are obligations a reviewer carries, not gates the forge
+  applies. This is deliberate: raising the global count to 2 would apply equally to a typo
+  fix, and with four eligible approvers and the author excluded, that means two of the
+  remaining three for every change.
+- **Reviewer assignment.** `MAINTAINERS` and `CODEOWNERS` do not exist, so nothing is
+  auto-assigned and no owner review is required. §5 describes the intended mechanism, not a
+  running one.
+- **x86.** Tier 1 is x86 and x86_64 under D4, but x86 was removed from the build matrix on
+  2026-09-03: upstream's pure-x86 package snapshot 404s, and no edit can fix it because the
+  URL is a checksum of the file being edited. Only x86_64 is built, booted and gated. The
+  policy is suspended, not withdrawn — `pr-gate.yml` carries the full reasoning and the
+  conditions for restoring it.
+- **Merge method.** §5 asks for squash or rebase and no merge commits from forks. The
+  repository currently permits all three merge types; this has not been tightened.
+
+---
+
+## Proposed future state
+
+Everything below describes the standard the project is aiming at. It is written in the
+present tense because that is what it will say on the day it is in force — but where it and
+the Current state section above disagree, the section above is what is actually happening.
+
+---
+
 ## 0. The four rules that do not move
 
 Everything else in this document is mechanics and can be tuned by the council. These four
@@ -186,6 +254,10 @@ all do would make it unusable on day one. So:
 Tier 1 is x86 and x86_64 (D4). Both must build and boot for any change to merge; a change
 that breaks 32-bit is as blocking as one that breaks 64-bit. 
 
+> **Not in force.** x86 left the build matrix on 2026-09-03 and only x86_64 is gated today.
+> The policy stands; the enforcement is suspended. See Current state above.
+
+
 This is deliberate — it is
 also free defect-finding, because pointer truncation and 64-bit-only assumptions are among
 the most common defects in machine-generated systems code, and a 32-bit Tier 1 catches
@@ -194,6 +266,10 @@ them at review time instead of at a user's desk.
 ---
 
 ## 4. High-risk paths
+
+> **Not in force.** The forge gate is 1 approval for every path; it cannot be varied per
+> path. The second approval below is a reviewer obligation, not a mechanism. See Current
+> state above.
 
 Two approvals, one being the area maintainer, and the author never merges. Where the path is
 unowned, two approvals from any maintainers, per the rule above — the second approval is the
@@ -216,13 +292,14 @@ the shape is:
 ## 5. Mechanics
 
 - **Reviewer assignment** comes from `MAINTAINERS` via `CODEOWNERS`. "Who decides this"
-  should never need a meeting to answer.
+  should never need a meeting to answer. *Neither file exists yet — nothing is auto-assigned
+  today. See Current state above.*
 - **CI green before human review.** Reviewers should not spend attention on a red build.
   Pre-review comments are welcome; formal approval waits for green.
 - **"Request changes" must name at least one specific finding.** An objection with no
   finding is a comment, not a block.
 - **Merge method:** squash for a single logical change, rebase for a curated series. No
-  merge commits from forks — upstream triage (D1) depends on a readable trunk. Trailers
+  merge commits from forks — upstream triage (D1) depends on a readable `main`. Trailers
   from §1 must survive the merge.
 - **Who presses merge:** the maintainer on high-risk paths; the author anywhere else, once
   approved and green.
@@ -261,13 +338,13 @@ This table is canonical. Where any other document names a deadline, this one win
 - **A pull request is never closed for inactivity without a stated reason.**
 - **Capacity is a tracked metric.** Crossing the alarm threshold is the signal to recruit
   reviewers, never the signal to lower the bar.
-- **These clocks are reviewed every release** (`GOVERNANCE.md` §9, not yet released). Tighten
+- **These clocks are reviewed every release** ([`GOVERNANCE.md`](GOVERNANCE.md) §9). Tighten
   them when we are comfortably beating them. There is no credit for a deadline we miss
   routinely, and a promise nobody keeps is worse than a slower promise we do.
 
 ## 7. Revert first
 
-- **Triggers:** Tier 1 CI red on trunk, a boot regression, any data-loss report, or a
+- **Triggers:** Tier 1 CI red on `main`, a boot regression, any data-loss report, or a
   reproducible hardware regression.
 - **Any maintainer may revert immediately**, without discussion, approval, or the author's
   agreement. The revert commit links the failure evidence.
