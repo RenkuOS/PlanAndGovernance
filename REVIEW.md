@@ -157,10 +157,25 @@ it; it costs a line and §0.3 guarantees it costs nothing else.
 
 ### 1.3 Provenance for code from another project
 
-Any change carrying code from another operating system or library names, per source:
+A file written for RenkuOS carries MIT, and that is the whole licensing story for it:
+
+    /*
+     * Copyright 2026, The RenkuOS authors.
+     * Distributed under the terms of the MIT License.
+     *
+     * SPDX-License-Identifier: MIT
+     */
+
+A file carrying code from another operating system or library is the case this section
+covers. It keeps the upstream identifier — `SPDX-License-Identifier: GPL-2.0-only`, not
+MIT — and the change names, per source:
 
     Ported-from: linux v6.9 fs/xfs/xfs_log.c
     Ported-from-license: GPL-2.0-only
+
+The identifier in the file and the `Ported-from-license:` trailer must name the same
+license. A reviewer who finds one without the other has found the thing this section
+exists to catch.
 
 This is the item with actual legal weight. The real exposure in assisted development is
 not that a tool wrote something — it is a tool reproducing copyleft or proprietary code

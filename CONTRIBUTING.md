@@ -122,6 +122,30 @@ Run `clang-format` on the lines you touched, and only on the lines you touched.
 
 Do not open a pull request that reformats code you are not otherwise changing.
 
+### Licensing your new file
+
+Every file you add needs an SPDX identifier. New code written for RenkuOS is MIT, so a new
+C or C++ file starts:
+
+    /*
+     * Copyright 2026, The RenkuOS authors.
+     * Distributed under the terms of the MIT License.
+     *
+     * SPDX-License-Identifier: MIT
+     */
+
+For a shell script, a Jamfile, or anything else taking `#` comments, one line is enough:
+
+    # SPDX-License-Identifier: MIT
+
+A file you ported is different. It keeps the upstream identifier — `BSD-3-Clause`,
+`GPL-2.0+`, or whatever the original carries — and the commit needs the `Ported-from:` and
+`Ported-from-license:` trailers with it. See [`REVIEW.md`](REVIEW.md) §1.3.
+
+Files inherited from Haiku are grandfathered. Do not add headers to files you did not
+create, and do not relicense what we inherited. The rule is D3 in
+[`DECISIONS.md`](DECISIONS.md), and `lint` only checks files your change adds.
+
 ### Commit messages
 
     subsystem: short imperative summary, under 72 characters
