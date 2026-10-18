@@ -202,6 +202,9 @@ Before you open it:
 - [ ] A summary you wrote yourself.
 - [ ] A **How this was tested** section.
 
+Open it ready for review once the checklist is done. Use a draft only for work you do not
+want reviewed yet, and say in the description what is missing.
+
 ### The "How this was tested" section is not optional
 
 "Builds fine" is not a verification statement. What is expected scales with what your change
