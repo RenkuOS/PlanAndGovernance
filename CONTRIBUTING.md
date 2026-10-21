@@ -2,8 +2,7 @@
 
 # Contributing to RenkuOS
 
-Status: **draft for comment.** Build commands and repository paths are placeholders until the
-repository lands — see [Before this goes live](#before-this-goes-live) at the end.
+Status: **draft for comment.** Feedback is welcome! Please post on the forums with questions, comments, suggestions, or any other feedback.
 
 This document covers how to get the source, build it, and submit a change. What happens to
 your change *after* you open it — who reviews it, what they may and may not block on, and how
@@ -15,9 +14,6 @@ The decisions this document depends on are recorded in [`DECISIONS.md`](DECISION
 ---
 
 ## Current state
-
-**As of 2026-09-15.** The repository has landed, so part of this document is now real and
-part is still the plan. This section is the real part.
 
 **Where the code is.** [`RenkuOS/Source`](https://github.com/RenkuOS/Source), branch `main`.
 
@@ -47,19 +43,6 @@ still means both 32- and 64-bit as policy (D4), but the 32-bit gate is suspended
 **What will only warn you:** a subject line of 72 characters or more, and a subject with no
 `subsystem: ` prefix. Both are still worth getting right.
 
-**What is not wired up yet.** `@council stalled` is a convention, not a mechanism — commenting
-it notifies nobody automatically today. The build and run commands below are still
-placeholders; see [Before this goes live](#before-this-goes-live).
-
----
-
-## Proposed future state
-
-Everything below describes how the project intends to work. Much of it is already true —
-the commit trailers, the size caps and the formatting rules above are enforced right now.
-Where this document and the Current state section disagree, the section above is what is
-actually happening.
-
 ---
 
 ## You do not have to write C++ to be useful
@@ -85,18 +68,14 @@ not deal with the tracker at all.
 
 ## Getting the source
 
-
+The current source is hosted on GitHub: [https://github.com/RenkuOS/Source](https://github.com/RenkuOS/Source). Please clone into your own repo, and make your own Feature branch. Do not attempt to merge directly into Main.
 
 ---
 
 ## Building
 
-
-
-### Running your build
-
-
 ---
+
 
 ## Making a change
 
@@ -108,17 +87,13 @@ A change spanning more than two subsystems is over the size cap regardless of li
 
 The full caps
 are in [`REVIEW.md`](REVIEW.md) §2; the short version is that 400 lines is routine, 1,000
-needs a splitting plan agreed with the area maintainer, and reviewer attention is the
-scarcest resource this project has.
+needs a splitting plan agreed with the area maintainer.
 
 ### Match the surrounding code
 
 We inherit Haiku's coding style and keep it, at least through the first year. This is not
 deference — the tree is written in it, a reformat destroys `git blame` exactly when our
 upstream cherry-picks depend on it, and every reformatted hunk becomes a permanent conflict.
-
-
-Run `clang-format` on the lines you touched, and only on the lines you touched.
 
 Do not open a pull request that reformats code you are not otherwise changing.
 
@@ -178,15 +153,12 @@ with exactly three obligations:
 1. **Disclose it** with an `Assisted-by:` trailer where a tool wrote a substantial part —
    more than roughly twenty lines you kept, or the design of the change itself. Autocomplete
    and formatters do not count.
-2. **Own it.** You are the engineer of record for every line. If you cannot explain why a
-   line is there, the change is not ready.
+2. **Own it.** You are the engineer of record for every line. 
 3. **Check where the code came from.** The real risk is a tool reproducing copyleft or
    proprietary code with nobody noticing. If code came from another project, say so in the
    signatures.
 
-Write your own pull request summary, though. A few plain sentences. 
-
-Long AI generated prose costs the reviewer more than the patch is worth.
+Avoid long AI generated prose. PR notes, commit messages, and comments should be detailed but concise.
 
 ---
 
@@ -194,16 +166,15 @@ Long AI generated prose costs the reviewer more than the patch is worth.
 
 Before you open it:
 
-- [ ] Both Tier 1 targets build.
-- [ ] The smoke pass passes locally.
-- [ ] `clang-format` run on changed lines only.
+- [ ] You have tested the change, either on hardware or in a VM
 - [ ] `Signed-off-by:` on every commit, plus any other signatures that apply.
 - [ ] Within the size cap, or a splitting plan agreed with the maintainer.
-- [ ] A summary you wrote yourself.
-- [ ] A **How this was tested** section.
+- [ ] A summary of the change.
+- [ ] A **How this was tested** section (See next section).
 
-Open it ready for review once the checklist is done. Use a draft only for work you do not
-want reviewed yet, and say in the description what is missing.
+Open it ready for review once the checklist is done. 
+
+Use a draft only for work you do not want reviewed yet, and say in the description what is missing.
 
 ### The "How this was tested" section is not optional
 
@@ -219,30 +190,6 @@ can break — the full table is [`REVIEW.md`](REVIEW.md) §3, and briefly:
 
 For a bugfix, the standard is a test that would have caught the bug.
 
-### Then what
-
-> **Not in force.** No reviewer is assigned automatically yet — `MAINTAINERS` and
-> `CODEOWNERS` do not exist. Name a reviewer yourself, or say in the pull request that you
-> need one. See Current state above.
-
-- A reviewer is assigned automatically from `MAINTAINERS` based on the paths you touched. Many
-  areas are still marked `unowned` — we are a small project and not pretending otherwise — and
-  in that case any maintainer may pick your change up. If nobody does, use the stall rule
-  below; it exists for exactly this.
-- Expect a first response within **14 days**. "I can't take this, ask X" is a valid response
-  and better than silence.
-- If nothing happens for **45 days**, comment `@council stalled`. Within 14 days the council
-  will either name a reviewer or close the request with a written reason. Silence is not one
-  of the options — an unreviewed pull request rotting for months is a bug in the project.
-- Those windows are long on purpose. We are about ten volunteers with day jobs across several
-  time zones, and we would rather promise something slow and keep it than promise something
-  fast and not. [`REVIEW.md`](REVIEW.md) §6 has the full table and the tighter targets we
-  intend to grow into.
-- "Request changes" from a reviewer must name at least one specific finding. An objection
-  with no finding is a comment, not a block.
-- If a change is reverted because it broke Tier 1 CI or real hardware, that is routine and
-  is not a judgement of you. Re-landing is expected; it just needs a test covering the
-  failure.
 
 ---
 
@@ -264,12 +211,9 @@ reason to stay quiet.
 
 ## Contributing a driver
 
-Drivers are the highest-value contributions we can take and they have one extra requirement:
-**name the hardware.** Model, and the PCI or USB ID. A driver that has never run on the
-device it claims to support is not a contribution, it is a hypothesis.
+Drivers are the high value contributions. Please name the hardware that it was tested on: model, and the PCI/USB ID. 
 
-If you have hardware nobody else has, say so in the pull request. It affects who can review
-it and whether we can regression-test it later.
+If there are multiple devices supported by the driver, try to list them in your PR and indicate which ones you have been able to test. Perhaps other users/developers can test other devices in the driver family.
 
 ---
 
@@ -281,16 +225,3 @@ it and whether we can regression-test it later.
 
 Asking a question is never an imposition. If someone makes you feel it was, that is worth
 raising — see `CODE_OF_CONDUCT.md`.
-
----
-
-## Before this goes live
-
-Placeholders in this document that need real values once the repository exists:
-
-- [ ] `<repo-url>` and `<buildtools-url>`
-- [ ] `<container-run-command>` and the actual build, boot, and smoke invocations
-- [ ] Confirm the `vendor/haiku` branch name matches what D1 actually sets up
-- [ ] Link `MAINTAINERS`, `SECURITY.md`, and `CODE_OF_CONDUCT.md` once they exist
-- [ ] Confirm the `@council stalled` mention matches whatever the forge actually supports
-- [ ] Name the rotating triage volunteer, or drop that paragraph if nobody takes it

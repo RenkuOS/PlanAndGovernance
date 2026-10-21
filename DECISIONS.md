@@ -17,7 +17,7 @@ More details listed in a sub-section below.
 | D3 | MIT only, unless already used in the Haiku codebase | 2026-09-01 | Decided |
 | D4 | Tier 1 x86/x86_64; Tier 2 RISC-V/ARM; Tier 3 SPARC/PPC/other | 2026-09-01 | **Proposed** |
 | D5 | Rolling nightly + weekly builds; 2 releases/year, 1-month freeze | 2026-09-01 | **Proposed** |
-| D6 | CI gating from day 1, before the repo opens for pull requests | 2026-09-01 | **Proposed** |
+| D6 | CI gating from day 1, before the repo opens for pull requests | 2026-09-01 | Decided |
 
 ---
 
@@ -70,9 +70,7 @@ If a copyleft exception is ever granted, that code lands as a **loadable kernel 
 own package, never statically linked into the core image** — linking GPL code into the kernel
 would make the shipped kernel binary GPL-only.
 
-**Open, and it will come up at the first driver import:** does "MIT" mean MIT strictly, or
-MIT-compatible permissive? A strict reading blocks BSD and ISC drivers from FreeBSD and
-OpenBSD, which is the richest source of hardware support available to us.
+**"MIT" means MIT-compatible permissive** Equivalent BSD and ISC licenses are acceptable.
 
 ## D4 — Architecture tiers  *(proposed)*
 
@@ -88,18 +86,10 @@ OpenBSD, which is the richest source of hardware support available to us.
   maintain it. The tier is a statement about maintainer capacity, not about the
   architecture's worth.
 - A Tier 1 break blocks the merge queue. A Tier 3 break blocks nobody.
-- **x86 here means 32-bit x86 on a modern toolchain. gcc2 is not revived and is not a
-  tier.** BeOS binary compatibility, if ever wanted, becomes a separate subsystem project
-  rather than a constraint on the whole tree.
-
-**Cost, stated plainly:** two Tier 1 targets roughly doubles the per-PR build budget, every
-port in the repository must build twice, and mirror space doubles. Practical mitigation if
-CI time becomes the bottleneck: build both per-PR, run the full test suite on x86_64
-per-PR and on x86 nightly.
+- x86 is current the gcc2 x86, however this may change as BeOS binary compatibility is debated.
 
 **Benefit worth naming:** a 32-bit Tier 1 catches pointer truncation and 64-bit-only
-assumptions at review time. That is among the most common defect classes in generated
-systems code, so this choice pays part of D6's bill.
+assumptions at review time.
 
 ## D5 — Rolling trunk, two releases a year  *(proposed)*
 
@@ -117,7 +107,7 @@ systems code, so this choice pays part of D6's bill.
   installer completes on the hardware lab, release notes written. A checklist can be run by
   someone other than the project lead, which is the actual goal.
 
-## D6 — CI from day 1  *(proposed)*
+## D6 — CI from day 1  *(decided)*
 
 The gate exists before the repository accepts its first pull request. Detail in
 [`engineering-charter.md`](engineering-charter.md) §3; the short version is that accepting machine-assisted
