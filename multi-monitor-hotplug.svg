@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 690" width="960" height="690" role="img" aria-label="Sequence of a monitor being plugged in. The monitor raises a hot-plug interrupt in the kernel driver. The driver releases the hot-plug semaphore that app_server's watcher thread waits on. app_server asks the accelerant for the connected heads and their EDID, builds a key from the set of monitors, and looks up a stored layout or places the new display to the right of the others. It asks the accelerant to check the whole configuration, then to commit it, and the accelerant programs the hardware. app_server resizes the canvas, moves windows off any display that went away, sends B_SCREEN_CHANGED to windows whose display changed, and tells input_server, Deskbar, Tracker, and Screen preferences that the layout changed. If the check fails, app_server drops the newest display and finally falls back to the primary display alone.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .lane{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .laneHw{fill:#FFF6E8;stroke:#B7791F;stroke-width:1.4}
+  .laneNew{fill:#DDEFEC;stroke:#0E6A62;stroke-width:1.6}
+  .life{stroke:#B4BFBE;stroke-width:1.4;stroke-dasharray:4 4}
+  .msg{stroke:#3B4A49;stroke-width:1.6;fill:none}
+  .ret{stroke:#6A7978;stroke-width:1.4;fill:none;stroke-dasharray:6 4}
+  .head{fill:#3B4A49}
+  .act{fill:#DDEFEC;stroke:#0E6A62;stroke-width:1.4}
+  .fail{fill:#FBEDEC;stroke:#9B2C2C;stroke-width:1.4}
+  .num{fill:#0E6A62} .numText{fill:#FFFFFF}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .lane{fill:#121B1B;stroke:#3A4746}
+    .laneHw{fill:#2B2214;stroke:#D69E2E}
+    .laneNew{fill:#12302D;stroke:#4FB6AA}
+    .life{stroke:#3A4746}
+    .msg{stroke:#ADBCBA} .ret{stroke:#7C8C8A} .head{fill:#ADBCBA}
+    .act{fill:#12302D;stroke:#4FB6AA}
+    .fail{fill:#2E1717;stroke:#F08A8A}
+    .num{fill:#4FB6AA} .numText{fill:#0E1515}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="m" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="head"/>
+  </marker>
+</defs>
+
+<rect width="960" height="690" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">Hotplug: a monitor is plugged in</text>
+<text x="28" y="64" font-size="15" class="sub">The driver reports. app_server decides the layout. The driver checks it before anything changes.</text>
+
+<!-- lanes -->
+<rect x="40" y="88" width="120" height="44" rx="6" class="laneHw"/>
+<text x="100" y="116" font-size="15" font-weight="700" text-anchor="middle" class="title">Monitor</text>
+<rect x="196" y="88" width="148" height="44" rx="6" class="lane"/>
+<text x="270" y="116" font-size="15" font-weight="700" text-anchor="middle" class="title">Kernel driver</text>
+<rect x="380" y="88" width="132" height="44" rx="6" class="lane"/>
+<text x="446" y="116" font-size="15" font-weight="700" text-anchor="middle" class="title">Accelerant</text>
+<rect x="560" y="88" width="160" height="44" rx="6" class="laneNew"/>
+<text x="640" y="116" font-size="15" font-weight="700" text-anchor="middle" class="title">app_server</text>
+<rect x="760" y="88" width="172" height="44" rx="6" class="lane"/>
+<text x="846" y="116" font-size="15" font-weight="700" text-anchor="middle" class="title">Windows and apps</text>
+
+<line x1="100" y1="132" x2="100" y2="672" class="life"/>
+<line x1="270" y1="132" x2="270" y2="672" class="life"/>
+<line x1="446" y1="132" x2="446" y2="672" class="life"/>
+<line x1="640" y1="132" x2="640" y2="672" class="life"/>
+<line x1="846" y1="132" x2="846" y2="672" class="life"/>
+
+<g font-size="13" class="sub">
+  <!-- 1 -->
+  <circle cx="64" cy="164" r="10" class="num"/><text x="64" y="168" font-size="12" font-weight="700" text-anchor="middle" class="numText">1</text>
+  <line x1="100" y1="170" x2="268" y2="170" class="msg" marker-end="url(#m)"/>
+  <text x="112" y="162">hot-plug interrupt</text>
+
+  <!-- 2 -->
+  <circle cx="234" cy="200" r="10" class="num"/><text x="234" y="204" font-size="12" font-weight="700" text-anchor="middle" class="numText">2</text>
+  <line x1="270" y1="206" x2="638" y2="206" class="msg" marker-end="url(#m)"/>
+  <text x="282" y="198">releases the hot-plug semaphore; the watcher wakes</text>
+
+  <!-- 3 -->
+  <circle cx="676" cy="240" r="10" class="num"/><text x="676" y="244" font-size="12" font-weight="700" text-anchor="middle" class="numText">3</text>
+  <line x1="640" y1="246" x2="448" y2="246" class="msg" marker-end="url(#m)"/>
+  <text x="458" y="238">get heads: connected, EDID</text>
+  <line x1="446" y1="272" x2="638" y2="272" class="ret" marker-end="url(#m)"/>
+  <text x="458" y="290">three heads, one new</text>
+
+  <!-- 4 -->
+  <circle cx="616" cy="312" r="10" class="num"/><text x="616" y="316" font-size="12" font-weight="700" text-anchor="middle" class="numText">4</text>
+    <rect x="694" y="300" width="238" height="64" rx="6" class="act"/>
+  <text x="706" y="320">key = the set of monitors.</text>
+  <text x="706" y="338">Known: use the stored layout.</text>
+  <text x="706" y="356">New: place it right of the others.</text>
+  <path d="M640 312 H692" class="msg" marker-end="url(#m)"/>
+
+  <!-- 5 -->
+  <circle cx="676" cy="392" r="10" class="num"/><text x="676" y="396" font-size="12" font-weight="700" text-anchor="middle" class="numText">5</text>
+  <line x1="640" y1="398" x2="448" y2="398" class="msg" marker-end="url(#m)"/>
+  <text x="458" y="390">check configuration (all heads)</text>
+  <line x1="446" y1="424" x2="638" y2="424" class="ret" marker-end="url(#m)"/>
+  <text x="458" y="442">OK, or "no: bandwidth"</text>
+
+  <!-- 6 -->
+  <circle cx="676" cy="468" r="10" class="num"/><text x="676" y="472" font-size="12" font-weight="700" text-anchor="middle" class="numText">6</text>
+  <line x1="640" y1="474" x2="448" y2="474" class="msg" marker-end="url(#m)"/>
+  <text x="458" y="466">commit configuration</text>
+  <line x1="446" y1="500" x2="102" y2="500" class="msg" marker-end="url(#m)"/>
+  <text x="114" y="492">PLLs, CRTCs, and encoders programmed; scanout starts</text>
+
+  <!-- 7 -->
+  <circle cx="616" cy="530" r="10" class="num"/><text x="616" y="534" font-size="12" font-weight="700" text-anchor="middle" class="numText">7</text>
+  <rect x="694" y="518" width="238" height="46" rx="6" class="act"/>
+  <text x="706" y="537">resize the canvas, move windows</text>
+  <text x="706" y="555">off a display that went away</text>
+  <path d="M640 530 H692" class="msg" marker-end="url(#m)"/>
+
+  <!-- 8 -->
+  <circle cx="616" cy="610" r="10" class="num"/><text x="616" y="614" font-size="12" font-weight="700" text-anchor="middle" class="numText">8</text>
+  <line x1="640" y1="610" x2="844" y2="610" class="msg" marker-end="url(#m)"/>
+  <text x="652" y="602">B_SCREEN_CHANGED</text>
+  <text x="652" y="630" font-size="12" class="muted">to windows whose display changed.</text>
+  <text x="652" y="646" font-size="12" class="muted">Layout notice to input_server, Deskbar,</text>
+  <text x="652" y="662" font-size="12" class="muted">Tracker, and Screen preferences.</text>
+</g>
+
+<!-- failure path -->
+<rect x="40" y="318" width="370" height="104" rx="8" class="fail"/>
+<text x="56" y="342" font-size="14" font-weight="700" class="title">If the check in step 5 fails</text>
+<text x="56" y="364" font-size="13" class="sub">Try again without the newest display, then with</text>
+<text x="56" y="382" font-size="13" class="sub">the primary alone. Nothing is committed until a</text>
+<text x="56" y="400" font-size="13" class="sub">check passes, so a bad layout never blanks the</text>
+<text x="56" y="418" font-size="13" class="sub">display the user is looking at.</text>
+</svg>

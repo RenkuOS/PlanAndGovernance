@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 660" width="960" height="660" role="img" aria-label="The phased plan. Phase 0, groundwork: head hooks in Accelerant.h, version 1 drivers wrapped as one head, and virtio_gpu driving every output. Phase 1, app_server: layout, canvas, per-display copy and cursor, window ownership, and the layout sent to input_server. Phase 2, Interface Kit and system apps. Phase 3, Screen preferences with drag to arrange and layouts stored per monitor set. Phases 4 and 5 add head support to radeon_hd and intel_extreme after phase 1. Phase 6, hotplug, follows phase 3 and the drivers. Per-display scaling, two graphics cards, rotation, wallpaper per display, overlays on every display, and DisplayPort MST are left for later.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .core{fill:#DDEFEC;stroke:#0E6A62;stroke-width:1.6}
+  .drv{fill:#FFF6E8;stroke:#B7791F;stroke-width:1.6}
+  .later{fill:none;stroke:#9AA6A5;stroke-width:1.4;stroke-dasharray:6 4}
+  .rule{stroke:#B4BFBE;stroke-width:1}
+  .line{stroke:#6A7978;stroke-width:1.6;fill:none}
+  .arrowhead{fill:#6A7978}
+  .num{fill:#0E6A62} .numText{fill:#FFFFFF}
+  .numDrv{fill:#B7791F}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .core{fill:#12302D;stroke:#4FB6AA}
+    .drv{fill:#2B2214;stroke:#D69E2E}
+    .later{stroke:#56625F}
+    .rule{stroke:#3A4746}
+    .line{stroke:#7C8C8A} .arrowhead{fill:#7C8C8A}
+    .num{fill:#4FB6AA} .numText{fill:#0E1515}
+    .numDrv{fill:#D69E2E}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead"/>
+  </marker>
+</defs>
+
+<rect width="960" height="660" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">Phased plan</text>
+<text x="28" y="64" font-size="15" class="sub">Each phase ends in something a tester can run. QEMU carries phases 0 to 3, so nobody waits on hardware.</text>
+
+<rect x="28" y="80" width="15" height="15" rx="2" class="core"/><text x="50" y="93" font-size="14" class="sub">app_server, kits, and apps</text>
+<rect x="244" y="80" width="15" height="15" rx="2" class="drv"/><text x="266" y="93" font-size="14" class="sub">hardware drivers</text>
+<rect x="400" y="80" width="15" height="15" rx="2" class="later"/><text x="422" y="93" font-size="14" class="sub">later</text>
+
+<!-- row 1 -->
+<g font-size="13" class="sub">
+  <rect x="28" y="110" width="202" height="196" rx="8" class="core"/>
+  <circle cx="50" cy="134" r="12" class="num"/><text x="50" y="139" font-size="13" font-weight="700" text-anchor="middle" class="numText">0</text>
+  <text x="70" y="139" font-size="15" font-weight="700" class="title">Groundwork</text>
+  <text x="42" y="166">Head hooks in Accelerant.h</text>
+  <text x="42" y="185">Version 1 drivers become</text>
+  <text x="42" y="204">one head, no change seen</text>
+  <text x="42" y="223">virtio_gpu drives all outputs</text>
+  <line x1="42" y1="238" x2="216" y2="238" class="rule"/>
+  <text x="42" y="258" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="42" y="276" font-size="12">every driver works as today</text>
+  <text x="42" y="293" font-size="12">and QEMU reports two heads</text>
+
+  <rect x="262" y="110" width="202" height="196" rx="8" class="core"/>
+  <circle cx="284" cy="134" r="12" class="num"/><text x="284" y="139" font-size="13" font-weight="700" text-anchor="middle" class="numText">1</text>
+  <text x="304" y="139" font-size="15" font-weight="700" class="title">app_server</text>
+  <text x="276" y="166">Layout and one canvas</text>
+  <text x="276" y="185">Copy and cursor per display</text>
+  <text x="276" y="204">Window ownership</text>
+  <text x="276" y="223">input_server gets the layout</text>
+  <line x1="276" y1="238" x2="450" y2="238" class="rule"/>
+  <text x="276" y="258" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="276" y="276" font-size="12">QEMU shows one desktop</text>
+  <text x="276" y="293" font-size="12">across two outputs</text>
+
+  <rect x="496" y="110" width="202" height="196" rx="8" class="core"/>
+  <circle cx="518" cy="134" r="12" class="num"/><text x="518" y="139" font-size="13" font-weight="700" text-anchor="middle" class="numText">2</text>
+  <text x="538" y="139" font-size="15" font-weight="700" class="title">Kits and apps</text>
+  <text x="510" y="166">BScreen enumeration and</text>
+  <text x="510" y="185">the primary display</text>
+  <text x="510" y="204">Tracker, Deskbar, Twitcher,</text>
+  <text x="510" y="223">notifications, screen saver</text>
+  <line x1="510" y1="238" x2="684" y2="238" class="rule"/>
+  <text x="510" y="258" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="510" y="276" font-size="12">the compatibility test apps</text>
+  <text x="510" y="293" font-size="12">behave on two displays</text>
+
+  <rect x="730" y="110" width="202" height="196" rx="8" class="core"/>
+  <circle cx="752" cy="134" r="12" class="num"/><text x="752" y="139" font-size="13" font-weight="700" text-anchor="middle" class="numText">3</text>
+  <text x="772" y="139" font-size="15" font-weight="700" class="title">Screen prefs</text>
+  <text x="744" y="166">Drag-to-arrange view</text>
+  <text x="744" y="185">Settings per display</text>
+  <text x="744" y="204">Mirroring</text>
+  <text x="744" y="223">Layouts per monitor set</text>
+  <line x1="744" y1="238" x2="918" y2="238" class="rule"/>
+  <text x="744" y="258" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="744" y="276" font-size="12">a layout survives a reboot</text>
+  <text x="744" y="293" font-size="12">and a replug</text>
+</g>
+
+<line x1="230" y1="208" x2="260" y2="208" class="line" marker-end="url(#a)"/>
+<line x1="464" y1="208" x2="494" y2="208" class="line" marker-end="url(#a)"/>
+<line x1="698" y1="208" x2="728" y2="208" class="line" marker-end="url(#a)"/>
+
+<!-- row 2 -->
+<g font-size="13" class="sub">
+  <rect x="262" y="346" width="202" height="178" rx="8" class="drv"/>
+  <circle cx="284" cy="370" r="12" class="numDrv"/><text x="284" y="375" font-size="13" font-weight="700" text-anchor="middle" class="numText">4</text>
+  <text x="304" y="375" font-size="15" font-weight="700" class="title">radeon_hd</text>
+  <text x="276" y="402">Track A fixes, head hooks</text>
+  <text x="276" y="421">DCE 4 to 8</text>
+  <text x="276" y="440">Bandwidth across heads</text>
+  <line x1="276" y1="455" x2="450" y2="455" class="rule"/>
+  <text x="276" y="475" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="276" y="493" font-size="12">Caicos and Bonaire run two</text>
+  <text x="276" y="510" font-size="12">different modes</text>
+
+  <rect x="496" y="346" width="202" height="178" rx="8" class="drv"/>
+  <circle cx="518" cy="370" r="12" class="numDrv"/><text x="518" y="375" font-size="13" font-weight="700" text-anchor="middle" class="numText">5</text>
+  <text x="538" y="375" font-size="15" font-weight="700" class="title">intel_extreme</text>
+  <text x="510" y="402">A plane per pipe</text>
+  <text x="510" y="421">PLLs and FIFO per pipe</text>
+  <text x="510" y="440">Panel plus external port</text>
+  <line x1="510" y1="455" x2="684" y2="455" class="rule"/>
+  <text x="510" y="475" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="510" y="493" font-size="12">a laptop runs its panel and a</text>
+  <text x="510" y="510" font-size="12">monitor at different modes</text>
+
+  <rect x="730" y="346" width="202" height="178" rx="8" class="core"/>
+  <circle cx="752" cy="370" r="12" class="num"/><text x="752" y="375" font-size="13" font-weight="700" text-anchor="middle" class="numText">6</text>
+  <text x="772" y="375" font-size="15" font-weight="700" class="title">Hotplug</text>
+  <text x="744" y="402">Interrupt to semaphore</text>
+  <text x="744" y="421">virtio display event first</text>
+  <text x="744" y="440">Restore layout, rescue windows</text>
+  <line x1="744" y1="455" x2="918" y2="455" class="rule"/>
+  <text x="744" y="475" font-size="12" font-weight="700" class="title">Done when</text>
+  <text x="744" y="493" font-size="12">unplugging a display never</text>
+  <text x="744" y="510" font-size="12">loses a window</text>
+</g>
+
+<line x1="363" y1="306" x2="363" y2="344" class="line" marker-end="url(#a)"/>
+<path d="M410 306 C410 330 560 320 597 344" class="line" marker-end="url(#a)"/>
+<line x1="831" y1="306" x2="831" y2="344" class="line" marker-end="url(#a)"/>
+<line x1="698" y1="435" x2="728" y2="435" class="line" marker-end="url(#a)"/>
+<path d="M363 524 V540 H860 V526" class="line" marker-end="url(#a)"/>
+<text x="140" y="420" font-size="13" text-anchor="middle" class="muted">drivers start</text>
+<text x="140" y="438" font-size="13" text-anchor="middle" class="muted">once phase 1</text>
+<text x="140" y="456" font-size="13" text-anchor="middle" class="muted">can show a</text>
+<text x="140" y="474" font-size="13" text-anchor="middle" class="muted">second head</text>
+
+<!-- later -->
+<rect x="28" y="566" width="904" height="72" rx="8" class="later"/>
+<text x="46" y="592" font-size="15" font-weight="700" class="title">Later, not in this plan</text>
+<text x="46" y="616" font-size="13" class="sub">Per-display scaling · two graphics cards · rotation · wallpaper per display · overlays on every display</text>
+<text x="46" y="634" font-size="13" class="sub">DisplayPort MST hubs and tiled monitors · non-desktop displays such as VR headsets</text>
+</svg>

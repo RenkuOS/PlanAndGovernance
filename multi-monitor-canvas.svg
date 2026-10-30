@@ -1,0 +1,114 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="How drawing reaches several displays. Windows draw once into a single canvas in RAM that covers the whole desktop frame. When a region changes, app_server clips it against each display's rectangle. Display 1 copies its part into its 32-bit front buffer. Display 3 copies its part and converts it to 16-bit color on the way. Display 2 had no change and copies nothing. Each display then draws the cursor if the cursor touches it.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .canvas{fill:#DDEFEC;stroke:#0E6A62;stroke-width:1.8}
+  .d1{fill:#BFE3DD;stroke:#0E6A62;stroke-width:1.6}
+  .d2{fill:#D5DFF2;stroke:#3B5B92;stroke-width:1.6}
+  .d3{fill:#F6E4C2;stroke:#B7791F;stroke-width:1.6}
+  .s1{fill:#0E6A62} .s2{fill:#3B5B92} .s3{fill:#B7791F}
+  .dirty{fill:#E05A47;fill-opacity:0.28;stroke:#B83A2A;stroke-width:1.8}
+  .win{fill:#FFFFFF;stroke:#3B4A49;stroke-width:1.3}
+  .tab{fill:#FFD43B;stroke:#3B4A49;stroke-width:1.1}
+  .line{stroke:#6A7978;stroke-width:1.6;fill:none}
+  .faint{stroke:#9AA6A5;stroke-width:1.4;fill:none;stroke-dasharray:5 4}
+  .arrowhead{fill:#6A7978}
+  .num{fill:#0E6A62} .numText{fill:#FFFFFF}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .box{fill:#121B1B;stroke:#3A4746}
+    .canvas{fill:#12302D;stroke:#4FB6AA}
+    .d1{fill:#1F4A44;stroke:#4FB6AA}
+    .d2{fill:#24365A;stroke:#7F9FD6}
+    .d3{fill:#4A3A1C;stroke:#D69E2E}
+    .s1{fill:#4FB6AA} .s2{fill:#7F9FD6} .s3{fill:#D69E2E}
+    .dirty{fill:#F08A8A;fill-opacity:0.30;stroke:#F08A8A}
+    .win{fill:#121B1B;stroke:#ADBCBA}
+    .tab{fill:#C9A227;stroke:#ADBCBA}
+    .line{stroke:#7C8C8A} .faint{stroke:#56625F} .arrowhead{fill:#7C8C8A}
+    .num{fill:#4FB6AA} .numText{fill:#0E1515}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead"/>
+  </marker>
+</defs>
+
+<rect width="960" height="600" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">One canvas, a front buffer per display</text>
+<text x="28" y="64" font-size="15" class="sub">Windows draw once. Each display copies only its own part of what changed.</text>
+
+<!-- windows -->
+<text x="28" y="108" font-size="15" font-weight="700" class="title">Windows</text>
+<rect x="36" y="134" width="110" height="58" class="win"/><rect x="36" y="122" width="56" height="12" class="tab"/>
+<rect x="50" y="206" width="110" height="58" class="win"/><rect x="50" y="194" width="56" height="12" class="tab"/>
+<rect x="36" y="278" width="110" height="40" class="win"/><rect x="36" y="266" width="56" height="12" class="tab"/>
+<line x1="168" y1="222" x2="196" y2="222" class="line" marker-end="url(#a)"/>
+<text x="28" y="344" font-size="13" class="sub">draw with the</text>
+<text x="28" y="361" font-size="13" class="sub">software Painter</text>
+
+<!-- canvas -->
+<rect x="200" y="96" width="420" height="250" rx="8" class="canvas"/>
+<text x="216" y="122" font-size="16" font-weight="700" class="title">Canvas</text>
+<text x="216" y="142" font-size="13" class="sub">one RAM back buffer, B_RGBA32, as big as the desktop frame</text>
+<rect x="210" y="207.5" width="120" height="67.5" class="d2"/>
+<rect x="330" y="185" width="160" height="90" class="d1"/>
+<rect x="490" y="170" width="120" height="67.5" class="d3"/>
+<text x="270" y="246" font-size="15" font-weight="700" text-anchor="middle" class="title">2</text>
+<text x="375" y="236" font-size="15" font-weight="700" text-anchor="middle" class="title">1</text>
+<text x="592" y="196" font-size="15" font-weight="700" text-anchor="middle" class="title">3</text>
+<rect x="455" y="191" width="75" height="38" class="dirty"/>
+<text x="216" y="306" font-size="13" class="sub">red: the region a window just redrew.</text>
+<text x="216" y="324" font-size="13" class="sub">It straddles displays 1 and 3.</text>
+
+<!-- arrows to front buffers -->
+<path d="M472 191 C472 158 600 150 676 150" class="line" marker-end="url(#a)"/>
+<path d="M530 216 C600 216 620 252 676 252" class="line" marker-end="url(#a)"/>
+<path d="M270 275 V290 H630 C656 290 652 354 676 354" class="faint" marker-end="url(#a)"/>
+
+<!-- front buffers -->
+<rect x="680" y="104" width="252" height="88" rx="8" class="box"/>
+<rect x="680" y="104" width="8" height="88" rx="2" class="s1"/>
+<text x="700" y="128" font-size="15" font-weight="700" class="title">Display 1 front buffer</text>
+<text x="700" y="149" font-size="13" class="sub">B_RGB32 in VRAM</text>
+<text x="700" y="168" font-size="13" class="sub">copies its part of the red region</text>
+
+<rect x="680" y="206" width="252" height="88" rx="8" class="box"/>
+<rect x="680" y="206" width="8" height="88" rx="2" class="s3"/>
+<text x="700" y="230" font-size="15" font-weight="700" class="title">Display 3 front buffer</text>
+<text x="700" y="251" font-size="13" class="sub">B_RGB16 in VRAM</text>
+<text x="700" y="270" font-size="13" class="sub">converts to 16-bit while copying</text>
+
+<rect x="680" y="308" width="252" height="88" rx="8" class="box"/>
+<rect x="680" y="308" width="8" height="88" rx="2" class="s2"/>
+<text x="700" y="332" font-size="15" font-weight="700" class="title">Display 2 front buffer</text>
+<text x="700" y="353" font-size="13" class="sub">B_RGB32 in VRAM</text>
+<text x="700" y="372" font-size="13" class="sub">nothing changed here: no copy</text>
+
+<!-- steps -->
+<rect x="28" y="420" width="904" height="160" rx="8" class="box"/>
+<g font-size="14" class="sub">
+  <circle cx="54" cy="448" r="11" class="num"/><text x="54" y="453" font-size="13" font-weight="700" text-anchor="middle" class="numText">1</text>
+  <text x="74" y="446">A window draws into the canvas once, in software,</text>
+  <text x="74" y="465">as all app_server drawing works today.</text>
+
+  <circle cx="54" cy="500" r="11" class="num"/><text x="54" y="505" font-size="13" font-weight="700" text-anchor="middle" class="numText">2</text>
+  <text x="74" y="498">The changed region is clipped against each</text>
+  <text x="74" y="517">display's rectangle.</text>
+
+  <circle cx="54" cy="552" r="11" class="num"/><text x="54" y="557" font-size="13" font-weight="700" text-anchor="middle" class="numText">3</text>
+  <text x="74" y="550">Each display copies its part and converts the color</text>
+  <text x="74" y="569">space on the way: today's CopyBackToFront(), per display.</text>
+
+  <circle cx="500" cy="448" r="11" class="num"/><text x="500" y="453" font-size="13" font-weight="700" text-anchor="middle" class="numText">4</text>
+  <text x="520" y="446">Each display draws the cursor if the cursor</text>
+  <text x="520" y="465">touches it, so a cursor on an edge shows on both.</text>
+
+  <text x="500" y="502" font-size="14" font-weight="700" class="title">Memory cost</text>
+  <text x="500" y="523">Two 4K displays side by side: 7680 × 2160 × 4 bytes,</text>
+  <text x="500" y="542">about 63 MiB of RAM. One 4K display today is 32 MiB.</text>
+  <text x="500" y="561">Dead space costs memory but no copying.</text>
+</g>
+</svg>

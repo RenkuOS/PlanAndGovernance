@@ -1,0 +1,184 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 700" width="960" height="700" role="img" aria-label="Mockup of the Screen preferences window. An Arrangement area at the top shows three displays drawn to scale: display 2 on the left, display 1 in the middle marked Primary and selected, and display 3 being dragged into place on the right, snapping to display 1's edge. An Identify button sits below them. Under the arrangement, a box for the selected display has checkboxes for Use this display and Primary display, and menus for Mirror, Resolution, Colors, and Refresh rate. To the right, the existing Workspaces box keeps its column and row controls and its Apply to menu, and a Display info box shows the connector, serial number, and physical size. Defaults, Revert, and Apply buttons run along the bottom. Numbered callouts explain each part.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .num{fill:#0E6A62} .numText{fill:#FFFFFF}
+  .shadow{fill:#000000;fill-opacity:0.12}
+  /* the mockup itself keeps Haiku's light look in both themes */
+  .win{fill:#D8D8D8;stroke:#7A7A7A;stroke-width:1.2}
+  .tab{fill:#FFCB00;stroke:#7A7A7A;stroke-width:1.2}
+  .ink{fill:#000000} .inkDim{fill:#5A5A5A}
+  .boxLine{fill:none;stroke:#A8A8A8;stroke-width:1.2}
+  .well{fill:#AEB6BD;stroke:#8C949A;stroke-width:1}
+  .disp{fill:#336698;stroke:#1E3F60;stroke-width:1.6}
+  .sel{fill:none;stroke:#FFCB00;stroke-width:3.2}
+  .ghost{fill:#336698;fill-opacity:0.55;stroke:#1E3F60;stroke-width:1.4;stroke-dasharray:5 3}
+  .guide{stroke:#FFCB00;stroke-width:2;stroke-dasharray:6 4}
+  .white{fill:#FFFFFF}
+  .pill{fill:#FFFFFF;fill-opacity:0.9}
+  .pillText{fill:#1E3F60}
+  .ctl{fill:#F2F2F2;stroke:#8C8C8C;stroke-width:1}
+  .field{fill:#FFFFFF;stroke:#8C8C8C;stroke-width:1}
+  .defbtn{fill:#F2F2F2;stroke:#3A3A3A;stroke-width:2}
+  .check{stroke:#1E3F60;stroke-width:2;fill:none}
+  .tri{fill:#3A3A3A}
+  .cursor{fill:#FFFFFF;stroke:#000000;stroke-width:1.2}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .num{fill:#4FB6AA} .numText{fill:#0E1515}
+    .shadow{fill-opacity:0.5}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+
+<rect width="960" height="700" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">Screen preferences: mockup</text>
+<text x="28" y="64" font-size="15" class="sub">Arrangement on top, the selected display's settings below. The existing controls keep their places.</text>
+
+<!-- window -->
+<rect x="46" y="110" width="640" height="566" class="shadow"/>
+<rect x="40" y="80" width="98" height="24" class="tab"/>
+<rect x="47" y="86" width="12" height="12" fill="none" stroke="#7A7A7A" stroke-width="1.2"/>
+<text x="68" y="97" font-size="13" font-weight="700" class="ink">Screen</text>
+<rect x="40" y="104" width="640" height="566" class="win"/>
+
+<!-- arrangement -->
+<rect x="56" y="122" width="608" height="232" rx="3" class="boxLine"/>
+<rect x="64" y="114" width="88" height="16" fill="#D8D8D8"/>
+<text x="68" y="127" font-size="13" font-weight="700" class="ink">Arrangement</text>
+<rect x="68" y="138" width="584" height="166" class="well"/>
+
+<rect x="132" y="196" width="120" height="68" rx="3" class="disp"/>
+<text x="192" y="228" font-size="22" font-weight="700" text-anchor="middle" class="white">2</text>
+<text x="192" y="250" font-size="12" text-anchor="middle" class="white">1920 × 1080</text>
+
+<rect x="252" y="172" width="160" height="92" rx="3" class="disp"/>
+<rect x="250" y="170" width="164" height="96" rx="4" class="sel"/>
+<text x="332" y="210" font-size="24" font-weight="700" text-anchor="middle" class="white">1</text>
+<text x="332" y="232" font-size="12" text-anchor="middle" class="white">2560 × 1440</text>
+<rect x="302" y="240" width="60" height="17" rx="8" class="pill"/>
+<text x="332" y="253" font-size="11" font-weight="700" text-anchor="middle" class="pillText">Primary</text>
+
+<line x1="412" y1="144" x2="412" y2="298" class="guide"/>
+<rect x="430" y="146" width="120" height="68" rx="3" class="ghost"/>
+<rect x="412" y="156" width="120" height="68" rx="3" class="disp"/>
+<text x="472" y="188" font-size="22" font-weight="700" text-anchor="middle" class="white">3</text>
+<text x="472" y="210" font-size="12" text-anchor="middle" class="white">1920 × 1080</text>
+<path d="M508 162 l0 18 l5 -5 l4 9 l3 -1.5 l-4 -9 l7 0 z" class="cursor"/>
+
+<rect x="68" y="314" width="78" height="26" rx="4" class="ctl"/>
+<text x="107" y="332" font-size="13" text-anchor="middle" class="ink">Identify</text>
+<text x="158" y="332" font-size="13" class="inkDim">Drag the displays to match your desk.</text>
+
+<!-- selected display -->
+<rect x="56" y="374" width="346" height="232" rx="3" class="boxLine"/>
+<rect x="64" y="366" width="196" height="16" fill="#D8D8D8"/>
+<text x="68" y="379" font-size="13" font-weight="700" class="ink">Display 1: DELL U2720Q</text>
+
+<rect x="72" y="392" width="14" height="14" class="field"/><path d="M75 399 l3 3 l6 -7" class="check"/>
+<text x="94" y="404" font-size="13" class="ink">Use this display</text>
+<rect x="232" y="392" width="14" height="14" class="field"/><path d="M235 399 l3 3 l6 -7" class="check"/>
+<text x="254" y="404" font-size="13" class="ink">Primary display</text>
+
+<g font-size="13">
+  <text x="162" y="436" text-anchor="end" class="ink">Mirror:</text>
+  <rect x="170" y="421" width="216" height="22" rx="3" class="ctl"/>
+  <text x="178" y="437" class="ink">None</text><path d="M372 429 l8 0 l-4 6 z" class="tri"/>
+
+  <text x="162" y="468" text-anchor="end" class="ink">Resolution:</text>
+  <rect x="170" y="453" width="216" height="22" rx="3" class="ctl"/>
+  <text x="178" y="469" class="ink">2560 × 1440</text><path d="M372 461 l8 0 l-4 6 z" class="tri"/>
+
+  <text x="162" y="500" text-anchor="end" class="ink">Colors:</text>
+  <rect x="170" y="485" width="216" height="22" rx="3" class="ctl"/>
+  <text x="178" y="501" class="ink">24 bits/pixel, 16 million</text><path d="M372 493 l8 0 l-4 6 z" class="tri"/>
+
+  <text x="162" y="532" text-anchor="end" class="ink">Refresh rate:</text>
+  <rect x="170" y="517" width="216" height="22" rx="3" class="ctl"/>
+  <text x="178" y="533" class="ink">59.95 Hz</text><path d="M372 525 l8 0 l-4 6 z" class="tri"/>
+
+  <text x="162" y="572" text-anchor="end" class="inkDim">Brightness:</text>
+  <rect x="170" y="566" width="216" height="5" rx="2" fill="#BDBDBD"/>
+  <text x="170" y="592" font-size="12" class="inkDim">not available on this display</text>
+</g>
+
+<!-- workspaces -->
+<rect x="416" y="374" width="248" height="118" rx="3" class="boxLine"/>
+<rect x="424" y="366" width="86" height="16" fill="#D8D8D8"/>
+<text x="428" y="379" font-size="13" font-weight="700" class="ink">Workspaces</text>
+<g font-size="13">
+  <text x="490" y="408" text-anchor="end" class="ink">Columns:</text>
+  <rect x="498" y="394" width="52" height="22" rx="3" class="field"/><text x="508" y="410" class="ink">2</text>
+  <text x="604" y="408" text-anchor="end" class="ink">Rows:</text>
+  <rect x="610" y="394" width="44" height="22" rx="3" class="field"/><text x="620" y="410" class="ink">2</text>
+  <text x="490" y="446" text-anchor="end" class="ink">Apply to:</text>
+  <rect x="498" y="431" width="156" height="22" rx="3" class="ctl"/>
+  <text x="506" y="447" class="ink">Current workspace</text><path d="M640 439 l8 0 l-4 6 z" class="tri"/>
+  <text x="428" y="478" font-size="12" class="inkDim">resolution, colors, and refresh rate</text>
+</g>
+
+<!-- display info -->
+<rect x="416" y="512" width="248" height="94" rx="3" class="boxLine"/>
+<rect x="424" y="504" width="88" height="16" fill="#D8D8D8"/>
+<text x="428" y="517" font-size="13" font-weight="700" class="ink">Display info</text>
+<g font-size="12" class="inkDim">
+  <text x="428" y="540">DisplayPort, head 0</text>
+  <text x="428" y="558">Serial no.: 1ABC234</text>
+  <text x="428" y="576">597 × 336 mm (from EDID)</text>
+  <text x="428" y="594">Horizontal 30–140 kHz</text>
+</g>
+
+<!-- buttons -->
+<rect x="56" y="626" width="86" height="28" rx="4" class="ctl"/>
+<text x="99" y="645" font-size="13" text-anchor="middle" class="ink">Defaults</text>
+<rect x="476" y="626" width="86" height="28" rx="4" class="ctl"/>
+<text x="519" y="645" font-size="13" text-anchor="middle" class="ink">Revert</text>
+<rect x="576" y="626" width="88" height="28" rx="4" class="defbtn"/>
+<text x="620" y="645" font-size="13" font-weight="700" text-anchor="middle" class="ink">Apply</text>
+
+<!-- callout markers on the mockup -->
+<g font-size="12" font-weight="700" text-anchor="middle">
+  <circle cx="544" cy="150" r="10" class="num"/><text x="544" y="154" class="numText">1</text>
+  <circle cx="58" cy="327" r="10" class="num"/><text x="58" y="331" class="numText">2</text>
+  <circle cx="276" cy="374" r="10" class="num"/><text x="276" y="378" class="numText">3</text>
+  <circle cx="380" cy="399" r="10" class="num"/><text x="380" y="403" class="numText">4</text>
+  <circle cx="396" cy="432" r="10" class="num"/><text x="396" y="436" class="numText">5</text>
+  <circle cx="664" cy="442" r="10" class="num"/><text x="664" y="446" class="numText">6</text>
+  <circle cx="664" cy="626" r="10" class="num"/><text x="664" y="630" class="numText">7</text>
+</g>
+
+<!-- callouts -->
+<g font-size="14" class="sub">
+  <circle cx="720" cy="122" r="11" class="num"/><text x="720" y="127" font-size="13" font-weight="700" text-anchor="middle" class="numText">1</text>
+  <text x="740" y="120">Drag displays to arrange</text>
+  <text x="740" y="139">them. Edges snap together</text>
+  <text x="740" y="158">and gaps close.</text>
+
+  <circle cx="720" cy="196" r="11" class="num"/><text x="720" y="201" font-size="13" font-weight="700" text-anchor="middle" class="numText">2</text>
+  <text x="740" y="194">Identify shows each</text>
+  <text x="740" y="213">display's number on it.</text>
+
+  <circle cx="720" cy="252" r="11" class="num"/><text x="720" y="257" font-size="13" font-weight="700" text-anchor="middle" class="numText">3</text>
+  <text x="740" y="250">The box below the</text>
+  <text x="740" y="269">arrangement edits the</text>
+  <text x="740" y="288">selected display.</text>
+
+  <circle cx="720" cy="326" r="11" class="num"/><text x="720" y="331" font-size="13" font-weight="700" text-anchor="middle" class="numText">4</text>
+  <text x="740" y="324">The primary display is what</text>
+  <text x="740" y="343">BScreen() returns. Deskbar</text>
+  <text x="740" y="362">lives there.</text>
+
+  <circle cx="720" cy="400" r="11" class="num"/><text x="720" y="405" font-size="13" font-weight="700" text-anchor="middle" class="numText">5</text>
+  <text x="740" y="398">Mirror shows another</text>
+  <text x="740" y="417">display's picture here.</text>
+
+  <circle cx="720" cy="456" r="11" class="num"/><text x="720" y="461" font-size="13" font-weight="700" text-anchor="middle" class="numText">6</text>
+  <text x="740" y="454">Workspace scope works as</text>
+  <text x="740" y="473">today, for each display.</text>
+
+  <circle cx="720" cy="512" r="11" class="num"/><text x="720" y="517" font-size="13" font-weight="700" text-anchor="middle" class="numText">7</text>
+  <text x="740" y="510">Apply asks to keep the new</text>
+  <text x="740" y="529">layout and reverts after 12</text>
+  <text x="740" y="548">seconds without an answer,</text>
+  <text x="740" y="567">as Screen does today.</text>
+</g>
+</svg>
