@@ -217,6 +217,22 @@ If there are multiple devices supported by the driver, try to list them in your 
 
 ---
 
+## Getting credited
+
+Contributors can be listed in the RenkuOS About window. This is opt-in. To be listed, add a
+row with your GitHub handle and the name you want shown to
+[`contributors.md`](https://github.com/RenkuOS/Source/blob/main/contributors.md) in
+RenkuOS/Source:
+
+```
+|your-github-handle|Your Display Name|
+```
+
+Make the change in a pull request, either in your first contribution or on its own. The usual
+`Signed-off-by:` rule applies. To change or remove your entry later, open another pull request.
+
+---
+
 ## Where to ask
 
 - The forum, for anything.
