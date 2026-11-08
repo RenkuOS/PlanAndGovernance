@@ -84,8 +84,8 @@ harness is how a new project earns a data-loss reputation in month one.
 4. **A hardware lab.** Two or three machines with switched power and serial console. This is
    what "tested physically where possible" becomes operationally — without it the phrase is
    unenforceable and will quietly be ignored.
-5. **A verification statement in every pull request.** For a bugfix, the standard is a test
-   that would have caught it.
+5. **A verification statement in every pull request.** For a bug fix, describe how the bug
+   was reproduced and what was checked after the fix.
 
 ### One rule to adopt before the first merge, not after the first bug report
 

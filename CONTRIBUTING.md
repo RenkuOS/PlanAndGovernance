@@ -2,12 +2,14 @@
 
 # Contributing to RenkuOS
 
-Status: **draft for comment.** Feedback is welcome! Please post on the forums with questions, comments, suggestions, or any other feedback.
+Status: **draft for comment.** Feedback is welcome! Please post on the
+[forum](https://forum.desktoponfire.com/) with questions, comments, suggestions, or any other
+feedback.
 
 This document covers how to get the source, build it, and submit a change. What happens to
 your change *after* you open it — who reviews it, what they may and may not block on, and how
-disagreements get settled — is in [`REVIEW.md`](REVIEW.md). Read that one too; it is short and
-it is the part most projects leave you to guess at.
+disagreements get settled — is in [`REVIEW.md`](REVIEW.md). Read its "Current state" section
+and §1 before your first pull request. The rest of it is reference.
 
 The decisions this document depends on are recorded in [`DECISIONS.md`](DECISIONS.md).
 
@@ -17,28 +19,33 @@ The decisions this document depends on are recorded in [`DECISIONS.md`](DECISION
 
 **Where the code is.** [`RenkuOS/Source`](https://github.com/RenkuOS/Source), branch `main`.
 
-**How a change lands.** You cannot push to `main` — every change goes through a pull request,
-and that applies to admins too. One approval merges it. Your own approval never counts
-toward your own change, and an approval is dropped if you push again afterwards.
+**How a change lands.** Every change goes through a pull request. One approval from an
+account with write access is required. Your own approval never counts toward your own
+change, and if you push after an approval, the new push needs a fresh approval. Branch
+protection does not bind admins, so an admin can merge without an approval.
 
-**Who can approve.** Four people hold write access today. An approval from anyone else —
-including organisation members with read access — is worth having but does not satisfy the
-gate. Nobody is assigned to your change automatically: `MAINTAINERS` and `CODEOWNERS` do not
-exist yet, so if you need a particular pair of eyes, say so in the pull request.
+**Who can approve.** Six accounts hold write access today, all of them admins. An approval
+from anyone else is worth having but does not satisfy the gate. Nobody is assigned to your
+change automatically: `MAINTAINERS` and `CODEOWNERS` do not exist yet, so if you need a
+particular pair of eyes, say so in the pull request.
 
-**What CI checks.** `policy checks`, `build x86_64` and `boot x86_64` must all pass before a
-merge is possible. Note the architecture: **x86 is not currently built or booted**. Tier 1
-still means both 32- and 64-bit as policy (D4), but the 32-bit gate is suspended — see
-[`REVIEW.md`](REVIEW.md) Current state for why.
+**Who merges.** The project owner or a maintainer merges your pull request once it is
+approved and CI is green. You do not need write access.
+
+**What CI checks.** `policy checks`, `build x86_64`, and `boot x86_64` must all pass before a
+merge is possible. Every pull request also builds and boots 32-bit x86 as the `x86_gcc2h`
+hybrid. Those two checks are advisory for now and do not block a merge, but please fix what
+they find (see [Code must build with gcc 2.95](#code-must-build-with-gcc-295)).
 
 **What will block your pull request:**
 
 - A commit without `Signed-off-by:` — use `git commit -s`
 - A new file without an SPDX identifier
-- More than 1,000 changed lines, unless someone applies the `oversize-approved` label
-- Touching more than two subsystems
-- `clang-format` differences on lines you changed
+- More than 1,000 changed lines, unless a maintainer applies the `oversize-approved` label
+- Touching more than two subsystems, unless a maintainer applies the same label
 - `Ported-from:` without `Ported-from-license:`, or the reverse
+- `clang-format` differences on lines you changed. This check is skipped until a
+  `.clang-format` file lands in the tree.
 
 **What will only warn you:** a subject line of 72 characters or more, and a subject with no
 `subsystem: ` prefix. Both are still worth getting right.
@@ -59,16 +66,16 @@ contribution:
 - **Ports and packaging.**
 - **Artwork and design.**
 
-If you report a problem and someone tells you to "just file a ticket", that is a bug in
-*us*, not in you. A rotating volunteer converts reports from the forum into tickets, so you
-are never required to learn a second tool to be heard. Ask in the forum if you would rather
-not deal with the tracker at all.
+You do not have to use the issue tracker to report a problem. A report on the
+[forum](https://forum.desktoponfire.com/) is just as welcome.
 
 ---
 
 ## Getting the source
 
-The current source is hosted on GitHub: [https://github.com/RenkuOS/Source](https://github.com/RenkuOS/Source). Please clone into your own repo, and make your own Feature branch. Do not attempt to merge directly into Main.
+The source is on GitHub at [RenkuOS/Source](https://github.com/RenkuOS/Source). Fork it,
+clone your fork, and do your work on a branch. Open the pull request from that branch against
+`main` in RenkuOS/Source. Nobody pushes to `main` directly.
 
 ---
 
@@ -86,8 +93,8 @@ One logical change per pull request.
 A change spanning more than two subsystems is over the size cap regardless of line count — split it and land the enabling parts first. 
 
 The full caps
-are in [`REVIEW.md`](REVIEW.md) §2; the short version is that 400 lines is routine, 1,000
-needs a splitting plan agreed with the area maintainer.
+are in [`REVIEW.md`](REVIEW.md) §2. The short version: up to 400 lines is routine, and more
+than 1,000 needs a splitting plan agreed with a maintainer.
 
 ### Match the surrounding code
 
@@ -96,6 +103,22 @@ deference — the tree is written in it, a reformat destroys `git blame` exactly
 upstream cherry-picks depend on it, and every reformatted hunk becomes a permanent conflict.
 
 Do not open a pull request that reformats code you are not otherwise changing.
+
+### Code must build with gcc 2.95
+
+Our 32-bit x86 build is the `x86_gcc2h` hybrid, as upstream Haiku's is. Much of the system,
+including `libbe`, is compiled with gcc 2.95 so that BeOS-era binaries keep working. That
+compiler supports only part of C++98, so C++11 and later features fail there even when
+x86_64 builds cleanly. For example, a header using `override` broke the hybrid build, which
+is why Haiku's public headers avoid it. The `build x86_gcc2h` check catches this. It is advisory today and will become
+required once it has been reliably green.
+
+If that check fails on your change, look at how the surrounding code solves the same problem
+and follow it. If you are stuck, ask in the pull request.
+
+This is the current state, not a permanent commitment. The project may move away from gcc 2.95
+if the group agrees to it, and that decision would be recorded in
+[`DECISIONS.md`](DECISIONS.md).
 
 ### Licensing your new file
 
@@ -116,6 +139,10 @@ For a shell script, a Jamfile, or anything else taking `#` comments, one line is
 A file you ported is different. It keeps the upstream identifier — `BSD-3-Clause`,
 `GPL-2.0+`, or whatever the original carries — and the commit needs the `Ported-from:` and
 `Ported-from-license:` trailers with it. See [`REVIEW.md`](REVIEW.md) §1.3.
+
+Permissive licenses such as MIT and BSD are fine. New code under a non-permissive license such
+as the GPL needs an explicit exception under D3 before it can merge into the core tree. Ask on
+the forum before you port it, not after.
 
 Files inherited from Haiku are grandfathered. Do not add headers to files you did not
 create, and do not relicense what we inherited. The rule is D3 in
@@ -184,18 +211,25 @@ can break — the full table is [`REVIEW.md`](REVIEW.md) §3, and briefly:
 | If you changed… | Say… |
 |---|---|
 | Docs, translations | that CI is green |
-| An app or preflet | that the smoke pass passes |
+| An app or preflet | that you launched it on a booted image and used what you changed |
 | A driver | the hardware you tested on, with model and PCI or USB ID |
-| A filesystem write path, kernel, VM, scheduler, boot loader, package solver, crypto | real hardware, the stress run you did, and how to revert |
+| A filesystem write path, kernel, VM, scheduler, boot loader, package solver, crypto | real hardware, the stress testing you did, and how to revert |
 
-For a bugfix, the standard is a test that would have caught the bug.
+For a bug fix, describe how you tested it: how you reproduced the bug, and what you checked
+after the fix.
+
+A scripted smoke pass and nightly stress runs are planned
+([`engineering-charter.md`](engineering-charter.md) §3) but do not exist yet, so for now the
+testing is yours to describe.
 
 
 ---
 
 ## Reporting a bug
 
-Include, or the ticket will bounce back to you for it:
+Open an issue on [RenkuOS/Source](https://github.com/RenkuOS/Source/issues), or post on the
+[forum](https://forum.desktoponfire.com/) if you would rather not use GitHub. Include the
+following, or the report will bounce back to you for it:
 
 - The build you are running — the revision, not "the latest".
 - Architecture and how you installed it.
@@ -235,9 +269,12 @@ Make the change in a pull request, either in your first contribution or on its o
 
 ## Where to ask
 
-- The forum, for anything.
+- The [forum](https://forum.desktoponfire.com/), for anything.
 - The pull request itself, for questions about a specific change.
-- `MAINTAINERS`, to find out who owns the code you are touching.
+
+There is no `MAINTAINERS` file yet, so nobody formally owns an area of the code. If you need
+a particular reviewer, name them in the pull request.
 
 Asking a question is never an imposition. If someone makes you feel it was, that is worth
-raising — see `CODE_OF_CONDUCT.md`.
+raising. There is no code of conduct document yet, so raise it with the project lead,
+`KevinAdams05` on GitHub.

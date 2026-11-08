@@ -14,7 +14,7 @@ a policy surface larger than its codebase.
 
 ## Current state
 
-**As of 2026-09-15.** This section records what is actually true and mechanically enforced
+**As of 2026-11-07.** This section records what is actually true and mechanically enforced
 today. It is the part of this document you can rely on; everything after it is the standard
 we intend to reach.
 
@@ -23,50 +23,61 @@ protected. On every pull request the forge enforces:
 
 | Rule | Enforced today | Where |
 |---|---|---|
-| A pull request is required to change `main` | Yes | Branch protection |
+| A pull request is required to change `main` | Yes, except for admins | Branch protection |
 | Approvals required | **1**, from an account with write access | Branch protection |
-| An author cannot approve their own change | Yes | GitHub behaviour |
-| Approvals dismissed when new commits land | Yes | Branch protection |
-| The most recent push must itself be approved | Yes | Branch protection |
+| An author cannot approve their own change | Yes | GitHub behavior |
+| A push after an approval needs a new approval | Yes — the most recent push must be approved by someone else | Branch protection |
 | Force-push and branch deletion | Blocked | Branch protection |
 | Review threads resolved before merge | Yes | Branch protection |
-| Admins bound by all of the above | Yes | Branch protection |
+| Admins bound by all of the above | **No** — admins can bypass branch protection | Branch protection |
 | Green CI before merge | Yes — `policy checks`, `build x86_64`, `boot x86_64` | Branch protection |
+| 32-bit x86 builds and boots | Advisory — `build x86_gcc2h` and `boot x86_gcc2h` run but do not block | `pr-gate.yml` |
 | `Signed-off-by:` on every commit (§1.1) | Yes, blocking | `lint.yml` |
 | `Ported-from:` / `Ported-from-license:` paired (§1.3) | Yes, blocking | `lint.yml` |
 | SPDX identifier on new files | Yes, blocking | `lint.yml` |
 | 1,000-line cap (§2) | Yes, blocking — `oversize-approved` label overrides | `lint.yml` |
-| Two-subsystem cap (§2) | Yes, blocking | `lint.yml` |
-| `clang-format` on changed lines | Yes, blocking | `lint.yml` |
+| Two-subsystem cap (§2) | Yes, blocking — `oversize-approved` label overrides | `lint.yml` |
+| `clang-format` on changed lines | Not yet — skipped until a `.clang-format` file lands | `lint.yml` |
 | Subject under 72 chars with a `subsystem:` prefix | Warning only | `lint.yml` |
 | `Assisted-by:` non-empty where present (§1.2) | Warning only | `lint.yml` |
 
-### Who can approve today
+### Who can approve and merge today
 
 An approval only counts if it comes from an account with **write** access. That is currently
-four people: `KevinAdams05`, `rainygirl`, `atomozero` and `RenkuOSAdmin`. `tmtfx` and
-`ilfelice` are organisation members with read access — they can review and comment, and that
-review is worth having, but it does not satisfy the gate. Raising them to write is a one-line
-change whenever the project wants it.
+six accounts, all of them admins: `KevinAdams05`, `rainygirl`, `shaka444`, `tmtfx`,
+`atomozero`, and `RenkuOSAdmin`. Anyone else can review and comment, and that review is worth
+having, but it does not satisfy the gate.
+
+The project owner or a maintainer merges an approved, green pull request. Most contributors
+work from forks without write access, so they cannot merge their own changes.
+
+There is no council yet. It will be formed once the project has enough people. Until then,
+where this document says the council decides, the project lead decides.
 
 ### What is not enforced yet
 
-Four gaps, stated here so they are countable rather than discovered during an argument:
+The gaps, stated here so they are countable rather than discovered during an argument:
 
 - **The §3 approval scale.** GitHub's required-approval count is a single global number; it
   cannot vary by path. The gate is **1** for every change, so the graduated table in §3 and
   the two-approval rule in §4 are obligations a reviewer carries, not gates the forge
   applies. This is deliberate: raising the global count to 2 would apply equally to a typo
-  fix, and with four eligible approvers and the author excluded, that means two of the
-  remaining three for every change.
+  fix, and with six eligible approvers and the author excluded, that means two of the
+  remaining five for every change.
 - **Reviewer assignment.** `MAINTAINERS` and `CODEOWNERS` do not exist, so nothing is
   auto-assigned and no owner review is required. §5 describes the intended mechanism, not a
   running one.
-- **x86.** Tier 1 is x86 and x86_64 under D4, but x86 was removed from the build matrix on
-  2026-09-03: upstream's pure-x86 package snapshot 404s, and no edit can fix it because the
-  URL is a checksum of the file being edited. Only x86_64 is built, booted and gated. The
-  policy is suspended, not withdrawn — `pr-gate.yml` carries the full reasoning and the
-  conditions for restoring it.
+- **x86.** Tier 1 is x86 and x86_64 under D4. Pure x86 cannot be built, because upstream's
+  pure-x86 package snapshot 404s. Since 2026-10-07, 32-bit x86 has been built and booted on
+  every pull request as the `x86_gcc2h` hybrid, which is how upstream Haiku builds it. Those
+  checks are advisory and will become required once they have been green for a while.
+  `pr-gate.yml` carries the reasoning. Much of the hybrid is compiled with gcc 2.95, so code
+  must build with it (see [`CONTRIBUTING.md`](CONTRIBUTING.md)). The project may move away
+  from gcc 2.95 if the group agrees to it.
+- **Admins.** Branch protection does not bind admins, and every account with write access is
+  an admin. An admin can merge without an approval.
+- **`clang-format`.** The check exists in `lint.yml`, but it skips until a `.clang-format`
+  file lands at the tree root.
 - **Merge method.** §5 asks for squash or rebase and no merge commits from forks. The
   repository currently permits all three merge types; this has not been tightened.
 
@@ -117,7 +128,7 @@ does it without needing to know how anything was produced.
 ### 0.3 Provenance is disclosed, not judged
 
 The `Assisted-by:` trailer (§1.2) is metadata. It exists so that in two years we can say
-something factual about defect rates instead of guessing, and so that licence questions
+something factual about defect rates instead of guessing, and so that license questions
 have an audit trail.
 
 It must never be used to justify rejecting a change, demanding extra review, or ranking
@@ -185,8 +196,9 @@ ships does not.
 Under D3 (see [`DECISIONS.md`](DECISIONS.md)) a non-permissive `Ported-from-license` on **new** code means
 the change cannot merge into the core tree without a council exception. Two things that are
 *not* caught by this: upstream cherry-picks into files already covered by the inherited
-licence baseline, and changes to inherited non-MIT code, both of which are grandfathered.
-`LICENSE_INVENTORY.md` is the authority on which files those are — do not guess.
+license baseline, and changes to inherited non-MIT code, both of which are grandfathered.
+`LICENSE_INVENTORY.md` will be the authority on which files those are. It is not written
+yet, so until it is, ask rather than guess.
 
 ### 1.4 A verification statement
 
@@ -209,15 +221,15 @@ this is the single cheapest norm to set on day one.
 ## 2. Size caps
 
 Reviewer attention is this project's scarcest resource, and tooling makes it trivial to
-produce more diff than we can absorb. Caps count **hand-reviewable** lines: vendored
-imports and files marked generated in `.gitattributes` are excluded.
+produce more diff than we can absorb. Caps count **hand-reviewable** lines: vendored code
+under `3rdparty/` and `vendor/` is excluded.
 
 | Size | What is required |
 |---|---|
 | ≤ 400 lines, one subsystem | Normal review. |
 | 400–1,000 lines | A sentence in the PR explaining why it is not smaller. |
 | > 1,000 lines | A splitting plan agreed with the area maintainer **before** review starts. |
-| Any size, exempt class | Label it and proceed. |
+| Any size, exempt class | A maintainer applies the `oversize-approved` label, and it proceeds. |
 
 **Exempt classes**: 
 - a new self-contained driver or filesystem in its own directory
@@ -227,7 +239,7 @@ imports and files marked generated in `.gitattributes` are excluded.
 - translations
 
 A change spanning more than two subsystems is over the cap regardless of line count.
-Split it by subsystem, land the enabling parts first.
+Split it by subsystem and land the enabling parts first.
 
 ---
 
@@ -255,7 +267,7 @@ all do would make it unusable on day one. So:
 - Where the project has too few maintainers to reach two approvals at all, **the council must
   approve the change explicitly and record that it did**, naming who reviewed it. This is a
   known weak point in a project this small; recording it is what stops it becoming invisible.
-- **Unowned is not a licence to self-merge.** If no maintainer will review a change to an
+- **Unowned is not a license to self-merge.** If no maintainer will review a change to an
   unowned area within the §6 clock, the stall rule applies — and "we are not taking changes
   to this area yet" is a legitimate answer from the council. It is a better answer than an
   unreviewed merge into code nobody understands.
@@ -269,8 +281,8 @@ all do would make it unusable on day one. So:
 Tier 1 is x86 and x86_64 (D4). Both must build and boot for any change to merge; a change
 that breaks 32-bit is as blocking as one that breaks 64-bit. 
 
-> **Not in force.** x86 left the build matrix on 2026-09-03 and only x86_64 is gated today.
-> The policy stands; the enforcement is suspended. See Current state above.
+> **Partly in force.** 32-bit x86 is built and booted on every pull request as the
+> `x86_gcc2h` hybrid, but only x86_64 blocks a merge today. See Current state above.
 
 
 This is deliberate — it is
@@ -294,7 +306,7 @@ the shape is:
 - `src/system/kernel/**` — including VM, scheduler, locking primitives
 - `src/system/boot/**`
 - `src/system/runtime_loader/**`
-- `src/system/libroot/**` (public behaviour)
+- `src/system/libroot/**` (public behavior)
 - `src/add-ons/kernel/busses/**`
 - `src/add-ons/kernel/file_systems/**` — any write path
 - `src/kits/package/**` and packagefs — the dependency solver especially
@@ -316,8 +328,8 @@ the shape is:
 - **Merge method:** squash for a single logical change, rebase for a curated series. No
   merge commits from forks — upstream triage (D1) depends on a readable `main`. Trailers
   from §1 must survive the merge.
-- **Who presses merge:** the maintainer on high-risk paths; the author anywhere else, once
-  approved and green.
+- **Who presses merge:** the project owner or a maintainer, once the change is approved and
+  green. On high-risk paths, never the author.
 - **New pushes re-request review.** A force-push that changes the base must say so.
 
 ---
@@ -347,13 +359,14 @@ This table is canonical. Where any other document names a deadline, this one win
 
 - **"I can't take this, ask X" is a valid first response**, and much better than silence. So is
   "this will be a while, and here is why".
-- **Escalation.** Once the stall clock runs out the author comments `@council stalled`. The
-  council then either names a reviewer or closes the request with a written reason. Silence is
-  not one of the options — that is the entire purpose of the clock.
+- **Escalation.** Once the stall clock runs out, the author comments "stalled" on the pull
+  request and asks the council to act. Until a council exists, that means the project lead.
+  The council then either names a reviewer or closes the request with a written reason.
+  Silence is not one of the options — that is the entire purpose of the clock.
 - **A pull request is never closed for inactivity without a stated reason.**
 - **Capacity is a tracked metric.** Crossing the alarm threshold is the signal to recruit
   reviewers, never the signal to lower the bar.
-- **These clocks are reviewed every release** ([`GOVERNANCE.md`](GOVERNANCE.md) §9). Tighten
+- **These clocks are reviewed every release** (`GOVERNANCE.md` §9, not yet published). Tighten
   them when we are comfortably beating them. There is no credit for a deadline we miss
   routinely, and a promise nobody keeps is worse than a slower promise we do.
 
@@ -363,11 +376,12 @@ This table is canonical. Where any other document names a deadline, this one win
   reproducible hardware regression.
 - **Any maintainer may revert immediately**, without discussion, approval, or the author's
   agreement. The revert commit links the failure evidence.
-- **A revert is not a judgement** of the author or the change. Re-landing is expected and
+- **A revert is not a judgment** of the author or the change. Re-landing is expected and
   routine.
-- **Re-landing requires the failure to be covered by a test.**
+- **Re-landing requires a description of how the failure was tested,** showing that the new
+  version no longer causes it.
 - Reverting someone's change is never a conduct matter, and objecting to a revert on tone
-  grounds is out of order. Depersonalising breakage is the entire point.
+  grounds is out of order. Depersonalizing breakage is the entire point.
 
 ---
 
@@ -415,16 +429,16 @@ than §0.1's left-hand column.
    symbol? Say so explicitly in the PR.
 9. **Foreign idioms.** Code that does not look like the rest of this tree usually has an
    unstated source. Ask where it came from — not whether a human typed it. §1.3 exists to
-   answer this, and the answer may be a licence problem worth catching.
-10. **A test for the bug.** For a fix, does a test exist that fails before and passes
-    after?
+   answer this, and the answer may be a license problem worth catching.
+10. **How the fix was tested.** For a bug fix, does the pull request say how the bug was
+    reproduced and what was checked after the fix?
 
 ---
 
 ## 10. What must not block a merge
 
 Everything here is a non-blocking comment. Using "request changes" for any of it is review
-theatre and it is how queues rot.
+theater and it is how queues rot.
 
 - Style already satisfied by `clang-format`.
 - Naming preferences, where the name is clear.
