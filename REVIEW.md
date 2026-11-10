@@ -36,7 +36,6 @@ protected. On every pull request the forge enforces:
 | `Ported-from:` / `Ported-from-license:` paired (§1.3) | Yes, blocking | `lint.yml` |
 | SPDX identifier on new files | Yes, blocking | `lint.yml` |
 | 1,000-line cap (§2) | Yes, blocking — `oversize-approved` label overrides | `lint.yml` |
-| Two-subsystem cap (§2) | Yes, blocking — `oversize-approved` label overrides | `lint.yml` |
 | `clang-format` on changed lines | Not yet — skipped until a `.clang-format` file lands | `lint.yml` |
 | Subject under 72 chars with a `subsystem:` prefix | Warning only | `lint.yml` |
 | `Assisted-by:` non-empty where present (§1.2) | Warning only | `lint.yml` |
@@ -106,7 +105,7 @@ finding. Neither is "was this written by an AI".
 | "This looks AI-generated." | "The early return at line 212 leaves `fLock` held." |
 | "Did you write this yourself?" | "This uses `B_` idioms we don't use anywhere else in this tree — where is it from?" |
 | "I don't trust generated drivers." | "Nothing here handles the device disappearing between probe and attach." |
-| "Too much code for one person to have written." | "This is 2,400 lines across four subsystems; please split it (§2)." |
+| "Too much code for one person to have written." | "This is 2,400 lines; please split it (§2)." |
 
 The right-hand column is stronger review than the left in every row. That is the actual
 argument for this rule: suspicion is a worse tool than a checklist, and §9 gives reviewers
@@ -226,7 +225,7 @@ under `3rdparty/` and `vendor/` is excluded.
 
 | Size | What is required |
 |---|---|
-| ≤ 400 lines, one subsystem | Normal review. |
+| ≤ 400 lines | Normal review. |
 | 400–1,000 lines | A sentence in the PR explaining why it is not smaller. |
 | > 1,000 lines | A splitting plan agreed with the area maintainer **before** review starts. |
 | Any size, exempt class | A maintainer applies the `oversize-approved` label, and it proceeds. |
@@ -238,8 +237,10 @@ under `3rdparty/` and `vendor/` is excluded.
 - generated tables
 - translations
 
-A change spanning more than two subsystems is over the cap regardless of line count.
-Split it by subsystem and land the enabling parts first.
+There is no cap on how many subsystems one change touches. A single logical change, such as a
+fix plus the CI and docs that go with it, may span several. The description should say why the
+parts belong together. A reviewer may still ask for a split when the parts can land on their own,
+for example landing the enabling parts first.
 
 ---
 

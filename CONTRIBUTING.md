@@ -42,7 +42,6 @@ they find (see [Code must build with gcc 2.95](#code-must-build-with-gcc-295)).
 - A commit without `Signed-off-by:` — use `git commit -s`
 - A new file without an SPDX identifier
 - More than 1,000 changed lines, unless a maintainer applies the `oversize-approved` label
-- Touching more than two subsystems, unless a maintainer applies the same label
 - `Ported-from:` without `Ported-from-license:`, or the reverse
 - `clang-format` differences on lines you changed. This check is skipped until a
   `.clang-format` file lands in the tree.
@@ -90,7 +89,7 @@ clone your fork, and do your work on a branch. Open the pull request from that b
 
 One logical change per pull request. 
 
-A change spanning more than two subsystems is over the size cap regardless of line count — split it and land the enabling parts first. 
+A change may touch several subsystems when they belong to one change. Say why in the description. A reviewer may ask you to split it if the parts can land separately.
 
 The full caps
 are in [`REVIEW.md`](REVIEW.md) §2. The short version: up to 400 lines is routine, and more
