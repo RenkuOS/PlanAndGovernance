@@ -149,8 +149,7 @@ are the reason the project exists in this form:
 4. **Nobody reviews their own high-risk change.** Maintainers included.
 
 Plus the two mechanical constraints that keep review capacity solvent: a **hard size cap**
-(400 lines routine, 1,000 lines needs a splitting plan, more than two subsystems is over
-the cap regardless of line count) and a **stall rule** (first response in 14 days,
+(400 lines routine, 1,000 lines needs a splitting plan) and a **stall rule** (first response in 14 days,
 hard escalation at 45, and the council must either name a reviewer or close with a written
 reason — loose starting numbers that tighten as we grow).
 
