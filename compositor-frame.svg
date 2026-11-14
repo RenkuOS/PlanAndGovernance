@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-label="One frame on the composited desktop, as a timeline. An application sends drawing commands. Its ServerWindow thread draws them into the window's buffer and adds the changed area to the compositor's damage, waking the compositor thread. The compositor thread waits for the next vertical retrace, or on a 60 Hz timer where the driver has none, then takes the damage, composites it into the back buffer, and copies the changed area to the front buffer. Drawing therefore reaches the screen up to one frame, about 16.7 milliseconds, later than today. Damage that arrives while a frame is being composited waits for the next one. Reading the screen back, or a direct window starting to draw, flushes pending damage first.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .lane{fill:#E7ECEB}
+  .app{fill:#D5DFF2;stroke:#3B5B92;stroke-width:1.4}
+  .draw{fill:#BFE3DD;stroke:#0E6A62;stroke-width:1.4}
+  .comp{fill:#F6E4C2;stroke:#B7791F;stroke-width:1.4}
+  .wait{fill:none;stroke:#9AA6A5;stroke-width:1.4;stroke-dasharray:5 4}
+  .tick{stroke:#9B2C2C;stroke-width:1.6}
+  .line{stroke:#6A7978;stroke-width:1.5;fill:none}
+  .arrowhead{fill:#6A7978}
+  .warn{fill:#9B2C2C}
+  .num{fill:#0E6A62} .numText{fill:#FFFFFF}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .box{fill:#121B1B;stroke:#3A4746}
+    .lane{fill:#1A2424}
+    .app{fill:#24365A;stroke:#7F9FD6}
+    .draw{fill:#1F4A44;stroke:#4FB6AA}
+    .comp{fill:#4A3A1C;stroke:#D69E2E}
+    .wait{stroke:#56625F}
+    .tick{stroke:#F08A8A}
+    .line{stroke:#7C8C8A} .arrowhead{fill:#7C8C8A}
+    .warn{fill:#F08A8A}
+    .num{fill:#4FB6AA} .numText{fill:#0E1515}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead"/>
+  </marker>
+</defs>
+
+<rect width="960" height="560" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">One frame</text>
+<text x="28" y="64" font-size="15" class="sub">Drawing goes into the window's buffer at once. The screen catches up after the next retrace.</text>
+
+<!-- lanes -->
+<rect x="28" y="92" width="904" height="62" class="lane"/>
+<rect x="28" y="160" width="904" height="62" class="lane"/>
+<rect x="28" y="228" width="904" height="62" class="lane"/>
+<rect x="28" y="296" width="904" height="48" class="lane"/>
+<text x="40" y="120" font-size="14" font-weight="700" class="title">Application</text>
+<text x="40" y="139" font-size="12" class="sub">BView::Draw()</text>
+<text x="40" y="188" font-size="14" font-weight="700" class="title">ServerWindow</text>
+<text x="40" y="207" font-size="12" class="sub">its thread in app_server</text>
+<text x="40" y="256" font-size="14" font-weight="700" class="title">Compositor</text>
+<text x="40" y="275" font-size="12" class="sub">one thread, display priority</text>
+<text x="40" y="324" font-size="14" font-weight="700" class="title">Screen</text>
+
+<!-- retrace ticks -->
+<line x1="300" y1="92" x2="300" y2="344" class="tick"/>
+<line x1="600" y1="92" x2="600" y2="344" class="tick"/>
+<line x1="900" y1="92" x2="900" y2="344" class="tick"/>
+<text x="300" y="362" font-size="12" text-anchor="middle" class="warn">retrace</text>
+<text x="600" y="362" font-size="12" text-anchor="middle" class="warn">retrace</text>
+<text x="900" y="362" font-size="12" text-anchor="middle" class="warn">retrace</text>
+<line x1="304" y1="378" x2="596" y2="378" class="line" marker-start="url(#a)" marker-end="url(#a)"/>
+<text x="450" y="394" font-size="12" text-anchor="middle" class="sub">one frame: 16.7 ms at 60 Hz (a timer where the driver has no retrace)</text>
+
+<!-- app -->
+<rect x="180" y="104" width="120" height="38" rx="5" class="app"/>
+<text x="240" y="128" font-size="12" text-anchor="middle" class="title">drawing commands</text>
+<path d="M300 142 C312 150 318 160 326 168" class="line" marker-end="url(#a)"/>
+
+<!-- server window -->
+<rect x="330" y="172" width="120" height="38" rx="5" class="draw"/>
+<text x="390" y="189" font-size="12" text-anchor="middle" class="title">draw into the</text>
+<text x="390" y="203" font-size="12" text-anchor="middle" class="title">window buffer</text>
+<path d="M450 200 C470 214 474 230 482 240" class="line" marker-end="url(#a)"/>
+<text x="458" y="232" font-size="11" class="sub">damage</text>
+
+<!-- compositor -->
+<rect x="486" y="242" width="114" height="34" rx="5" class="wait"/>
+<text x="543" y="263" font-size="12" text-anchor="middle" class="sub">wait for retrace</text>
+<rect x="602" y="240" width="150" height="38" rx="5" class="comp"/>
+<text x="677" y="257" font-size="12" text-anchor="middle" class="title">composite the damage</text>
+<text x="677" y="271" font-size="12" text-anchor="middle" class="title">into the back buffer</text>
+<path d="M752 270 C770 286 776 298 784 304" class="line" marker-end="url(#a)"/>
+
+<!-- screen -->
+<rect x="788" y="302" width="110" height="34" rx="5" class="box"/>
+<text x="843" y="323" font-size="12" text-anchor="middle" class="title">copy to front</text>
+
+<!-- notes -->
+<rect x="28" y="412" width="904" height="130" rx="8" class="box"/>
+<g font-size="13" class="sub">
+  <circle cx="54" cy="440" r="11" class="num"/><text x="54" y="445" font-size="13" font-weight="700" text-anchor="middle" class="numText">1</text>
+  <text x="74" y="438">Damage collects in Compositor::Composite() under its own</text>
+  <text x="74" y="456">lock and wakes the thread once; later damage waits a frame.</text>
+
+  <circle cx="54" cy="490" r="11" class="num"/><text x="54" y="495" font-size="13" font-weight="700" text-anchor="middle" class="numText">2</text>
+  <text x="74" y="488">It composites holding the window lock for reading, as</text>
+  <text x="74" y="506">drawing does, so a frame never shows a half-moved window.</text>
+
+  <circle cx="500" cy="440" r="11" class="num"/><text x="500" y="445" font-size="13" font-weight="700" text-anchor="middle" class="numText">3</text>
+  <text x="520" y="438">The cost: drawing reaches the screen up to one frame later</text>
+  <text x="520" y="456">than today. Direct windows don't wait.</text>
+
+  <circle cx="500" cy="490" r="11" class="num"/><text x="500" y="495" font-size="13" font-weight="700" text-anchor="middle" class="numText">4</text>
+  <text x="520" y="488">Reading the screen back (screenshots, BScreen::ReadBitmap())</text>
+  <text x="520" y="506">and a direct window starting to draw flush the damage first.</text>
+  <text x="74" y="532" class="muted">The retrace path has only been reasoned about: no machine tested so far has a driver with WaitForRetrace().</text>
+</g>
+</svg>

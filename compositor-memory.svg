@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" width="960" height="520" role="img" aria-label="The life of a window buffer. A window has no buffer until it is shown. Showing it allocates a buffer, a kernel area of its own, rounded up to the next 128 pixels in each direction; the window then draws into it. Growing past that size reallocates to the next step and copies what fits. Shrinking to less than half the area reallocates smaller. Hiding or minimizing the window, or leaving the workspace it is on, frees the buffer; the window redraws when it can be seen again. Closing the window frees it too. Each visible window costs width times height times 4 bytes: about 0.5 MB for 400 by 300, 8 MB for 1920 by 1080, and 33 MB for 3840 by 2160. On x86_gcc2h the buffers share app_server's 2 GB address space.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .none{fill:#E7ECEB;stroke:#9AA6A5;stroke-width:1.6}
+  .has{fill:#BFE3DD;stroke:#0E6A62;stroke-width:1.8}
+  .line{stroke:#6A7978;stroke-width:1.6;fill:none}
+  .arrowhead{fill:#6A7978}
+  .warn{fill:#9B2C2C}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .box{fill:#121B1B;stroke:#3A4746}
+    .none{fill:#1A2424;stroke:#56625F}
+    .has{fill:#1F4A44;stroke:#4FB6AA}
+    .line{stroke:#7C8C8A} .arrowhead{fill:#7C8C8A}
+    .warn{fill:#F08A8A}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead"/>
+  </marker>
+</defs>
+
+<rect width="960" height="520" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">The life of a window buffer</text>
+<text x="28" y="64" font-size="15" class="sub">Only windows that can be seen have one. Each is a kernel area, so its memory goes back at once.</text>
+
+<!-- states -->
+<rect x="60" y="130" width="220" height="110" rx="14" class="none"/>
+<text x="170" y="178" font-size="17" font-weight="700" text-anchor="middle" class="title">No buffer</text>
+<text x="170" y="200" font-size="13" text-anchor="middle" class="sub">costs nothing</text>
+
+<rect x="560" y="130" width="340" height="110" rx="14" class="has"/>
+<text x="730" y="170" font-size="17" font-weight="700" text-anchor="middle" class="title">Buffer</text>
+<text x="730" y="192" font-size="13" text-anchor="middle" class="sub">width × height × 4 bytes, rounded up to</text>
+<text x="730" y="210" font-size="13" text-anchor="middle" class="sub">the next 128 pixels each way</text>
+
+<!-- arrows -->
+<path d="M284 160 H556" class="line" marker-end="url(#a)"/>
+<text x="420" y="150" font-size="13" text-anchor="middle" class="title">shown, then drawn</text>
+<path d="M556 214 H284" class="line" marker-end="url(#a)"/>
+<text x="420" y="236" font-size="13" text-anchor="middle" class="title">hidden, minimized, its workspace left,</text>
+<text x="420" y="254" font-size="13" text-anchor="middle" class="title">or closed</text>
+<text x="420" y="274" font-size="12" text-anchor="middle" class="sub">it redraws when it can be seen again</text>
+
+<!-- self loops -->
+<path d="M650 128 C650 82 810 82 810 128" class="line" marker-end="url(#a)"/>
+<text x="730" y="80" font-size="13" text-anchor="middle" class="title">resized</text>
+<g font-size="12" class="sub">
+  <text x="566" y="296">past its size: reallocated to the next step,</text>
+  <text x="566" y="313">copying what fits;</text>
+  <text x="566" y="334">to less than half its area: reallocated</text>
+  <text x="566" y="351">smaller; anything in between: kept as is.</text>
+</g>
+
+<!-- costs -->
+<rect x="28" y="378" width="904" height="122" rx="8" class="box"/>
+<text x="46" y="406" font-size="15" font-weight="700" class="title">What windows cost</text>
+<g font-size="13" class="sub">
+  <text x="46" y="432">400 × 300: about 0.5 MB.   1920 × 1080: about 8 MB.   3840 × 2160: about 33 MB.</text>
+  <text x="46" y="452">Measured in VirtualBox: after a stress run app_server used 49.2 MB composited against 46.7 MB stock;</text>
+  <text x="46" y="471">switching to an empty workspace took five buffers (4.6 MB) down to two (3.1 MB). Busy desktops at high</text>
+  <text x="46" y="490" class="warn">resolutions aren't measured yet. On x86_gcc2h the buffers share app_server's 2 GB address space.</text>
+</g>
+</svg>
