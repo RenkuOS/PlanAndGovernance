@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="How the compositor builds a damaged area in two passes. First, front to back, it finds which part of each window can be seen inside the damage: each window's layer is the remaining damage within its composite region, plus the part of its shadow frame outside its opaque region. A window drawn at full alpha takes its opaque region out of what remains, so windows fully behind it are skipped. A transparent window takes out only its frame, not its content. Windows behind the top window of a stack are skipped. Second, back to front, it fills what nothing covers with the desktop colour, then for each layer draws the shadow, blends transparent content, blends corner edges, and copies the opaque rest, or blends it with the window's alpha while the window is dragged. Last, the on-screen content of every direct window is taken out, and the rest is copied to the front buffer.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .w1{fill:#D5DFF2;stroke:#3B5B92;stroke-width:1.4}
+  .w2{fill:#F6E4C2;stroke:#B7791F;stroke-width:1.4}
+  .w3{fill:#BFE3DD;stroke:#0E6A62;stroke-width:1.6}
+  .tab{fill:#FFD43B;stroke:#3B4A49;stroke-width:1}
+  .dmg{fill:#E05A47;fill-opacity:0.22;stroke:#B83A2A;stroke-width:1.8;stroke-dasharray:6 3}
+  .skip{fill:#9AA6A5;fill-opacity:0.35}
+  .line{stroke:#6A7978;stroke-width:1.6;fill:none}
+  .arrowhead{fill:#6A7978}
+  .num{fill:#0E6A62} .numText{fill:#FFFFFF}
+  .s1{fill:#3B5B92} .s2{fill:#B7791F} .s3{fill:#0E6A62}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .box{fill:#121B1B;stroke:#3A4746}
+    .w1{fill:#24365A;stroke:#7F9FD6}
+    .w2{fill:#4A3A1C;stroke:#D69E2E}
+    .w3{fill:#1F4A44;stroke:#4FB6AA}
+    .tab{fill:#C9A227;stroke:#ADBCBA}
+    .dmg{fill:#F08A8A;fill-opacity:0.25;stroke:#F08A8A}
+    .skip{fill:#56625F;fill-opacity:0.5}
+    .line{stroke:#7C8C8A} .arrowhead{fill:#7C8C8A}
+    .num{fill:#4FB6AA} .numText{fill:#0E1515}
+    .s1{fill:#7F9FD6} .s2{fill:#D69E2E} .s3{fill:#4FB6AA}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead"/>
+  </marker>
+</defs>
+
+<rect width="960" height="600" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">Compositing a damaged area</text>
+<text x="28" y="64" font-size="15" class="sub">Compositor::_Composite(): find what can be seen front to back, then draw it back to front.</text>
+
+<!-- scene -->
+<rect x="28" y="88" width="330" height="300" rx="8" class="box"/>
+<text x="46" y="114" font-size="15" font-weight="700" class="title">The screen</text>
+<rect x="56" y="150" width="170" height="120" class="w1"/><rect x="56" y="138" width="70" height="12" class="tab"/>
+<text x="70" y="172" font-size="12" class="title">C (back)</text>
+<rect x="120" y="190" width="150" height="110" class="w2"/><rect x="120" y="178" width="70" height="12" class="tab"/>
+<text x="134" y="212" font-size="12" class="title">B</text>
+<rect x="180" y="230" width="150" height="120" class="w3"/><rect x="180" y="218" width="70" height="12" class="tab"/>
+<text x="194" y="252" font-size="12" class="title">A (front)</text>
+<rect x="150" y="160" width="120" height="120" class="dmg"/>
+<text x="46" y="372" font-size="12" class="sub">dashed red: the damage, say B redrew</text>
+
+<!-- pass 1 -->
+<rect x="374" y="88" width="270" height="300" rx="8" class="box"/>
+<text x="392" y="114" font-size="15" font-weight="700" class="title">1. Front to back</text>
+<g font-size="12" class="sub">
+  <rect x="392" y="132" width="8" height="40" rx="2" class="s3"/>
+  <text x="408" y="145">A: its layer is the damage inside</text>
+  <text x="408" y="161">its frame, plus its shadow. Opaque:</text>
+  <text x="408" y="177">that part is done for windows behind.</text>
+  <rect x="392" y="192" width="8" height="40" rx="2" class="s2"/>
+  <text x="408" y="205">B: what is left of the damage</text>
+  <text x="408" y="221">inside B. Opaque, so it removes</text>
+  <text x="408" y="237">its part too.</text>
+  <rect x="392" y="252" width="8" height="40" rx="2" class="s1"/>
+  <text x="408" y="265">C: only what A and B left.</text>
+  <text x="408" y="281">Nothing left: the search ends.</text>
+  <text x="392" y="312" class="muted">A transparent window removes only</text>
+  <text x="392" y="328" class="muted">its frame. A dragged window (alpha</text>
+  <text x="392" y="344" class="muted">192) removes nothing. Windows behind</text>
+  <text x="392" y="360" class="muted">a stack's top window are skipped.</text>
+</g>
+
+<!-- pass 2 -->
+<rect x="660" y="88" width="272" height="300" rx="8" class="box"/>
+<text x="678" y="114" font-size="15" font-weight="700" class="title">2. Back to front</text>
+<g font-size="12" class="sub">
+  <circle cx="690" cy="140" r="9" class="num"/><text x="690" y="144" font-size="11" font-weight="700" text-anchor="middle" class="numText">a</text>
+  <text x="706" y="144">desktop colour where nothing is</text>
+  <circle cx="690" cy="170" r="9" class="num"/><text x="690" y="174" font-size="11" font-weight="700" text-anchor="middle" class="numText">b</text>
+  <text x="706" y="174">then for each layer, C, B, A:</text>
+  <text x="706" y="196">the shadow, darkening what's</text>
+  <text x="706" y="212">already there;</text>
+  <text x="706" y="232">transparent content, by alpha;</text>
+  <text x="706" y="252">corner edges, by coverage;</text>
+  <text x="706" y="272">the rest copied, or blended</text>
+  <text x="706" y="288">with the window's alpha.</text>
+  <circle cx="690" cy="318" r="9" class="num"/><text x="690" y="322" font-size="11" font-weight="700" text-anchor="middle" class="numText">c</text>
+  <text x="706" y="322">take out every direct window's</text>
+  <text x="706" y="338">on-screen content, and copy the</text>
+  <text x="706" y="354">rest to the front buffer.</text>
+</g>
+
+<!-- bottom: cost notes -->
+<rect x="28" y="404" width="904" height="174" rx="8" class="box"/>
+<text x="46" y="432" font-size="15" font-weight="700" class="title">What it costs, and where</text>
+<g font-size="13" class="sub">
+  <text x="46" y="458">Every pixel that changes is written twice before the front buffer: into its window buffer, then into the back buffer.</text>
+  <text x="46" y="477">Copies of opaque areas are memcpy per row. Blending (_Blend, _BlendPixels, _BlendEdges, _DrawShadow) is plain</text>
+  <text x="46" y="496">scalar C++, and a shadow is recomputed for every damaged pixel it covers: a cursor blinking under a shadow pays it.</text>
+  <text x="46" y="522">Moves and raises get cheaper: a 400 × 300 window dragged over another took 0.27 ms instead of 0.49 ms, with no</text>
+  <text x="46" y="541">redraws of the window below instead of about 390 (VirtualBox, 1024 × 768). A full-screen 1920 × 1080 game at</text>
+  <text x="46" y="560">60 fps would pay about 500 MB/s of extra copying. Nothing is measured above 1024 × 768 or on slow CPUs yet.</text>
+</g>
+</svg>

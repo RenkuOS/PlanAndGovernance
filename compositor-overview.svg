@@ -1,0 +1,132 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="How drawing reaches the screen with the compositor off and on. Off, as today: windows draw straight into app_server's back buffer, clipped to what can be seen, and changed areas are copied to the front buffer. A window that moves uncovers others, which must redraw. On: each window draws into a window buffer of its own. The compositor thread builds the back buffer from those buffers, back to front, with shadows and rounded corners, then copies changed areas to the front buffer. Moving or raising a window is recomposited from the buffers without any application redrawing. A BDirectWindow still draws straight into the front buffer, and the compositor leaves its area alone. Whether the compositor runs is decided when app_server starts.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .off{fill:#E7ECEB;stroke:#9AA6A5;stroke-width:1.4}
+  .on{fill:#DDEFEC;stroke:#0E6A62;stroke-width:1.8}
+  .buf{fill:#BFE3DD;stroke:#0E6A62;stroke-width:1.4}
+  .comp{fill:#D5DFF2;stroke:#3B5B92;stroke-width:1.6}
+  .vram{fill:#FFF6E8;stroke:#B7791F;stroke-width:1.4}
+  .direct{fill:#FBEDEC;stroke:#9B2C2C;stroke-width:1.4}
+  .win{fill:#FFFFFF;stroke:#3B4A49;stroke-width:1.3}
+  .tab{fill:#FFD43B;stroke:#3B4A49;stroke-width:1.1}
+  .line{stroke:#6A7978;stroke-width:1.6;fill:none}
+  .warnline{stroke:#9B2C2C;stroke-width:1.6;fill:none;stroke-dasharray:6 4}
+  .arrowhead{fill:#6A7978} .warnhead{fill:#9B2C2C}
+  .accent{fill:#0A544E} .warn{fill:#9B2C2C}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .box{fill:#121B1B;stroke:#3A4746}
+    .off{fill:#1A2424;stroke:#56625F}
+    .on{fill:#12302D;stroke:#4FB6AA}
+    .buf{fill:#1F4A44;stroke:#4FB6AA}
+    .comp{fill:#24365A;stroke:#7F9FD6}
+    .vram{fill:#4A3A1C;stroke:#D69E2E}
+    .direct{fill:#3A1E1E;stroke:#F08A8A}
+    .win{fill:#121B1B;stroke:#ADBCBA}
+    .tab{fill:#C9A227;stroke:#ADBCBA}
+    .line{stroke:#7C8C8A} .arrowhead{fill:#7C8C8A}
+    .warnline{stroke:#F08A8A} .warnhead{fill:#F08A8A}
+    .accent{fill:#4FB6AA} .warn{fill:#F08A8A}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+<defs>
+  <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="arrowhead"/>
+  </marker>
+  <marker id="w" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+    <path d="M0 0L10 5L0 10z" class="warnhead"/>
+  </marker>
+</defs>
+
+<rect width="960" height="600" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">The compositor, off and on</text>
+<text x="28" y="64" font-size="15" class="sub">Off, nothing changes. On, every window draws into a buffer of its own, and a thread builds the screen.</text>
+
+<!-- OFF -->
+<rect x="28" y="88" width="430" height="356" rx="10" class="off"/>
+<text x="46" y="116" font-size="17" font-weight="700" class="title">Off: as today</text>
+
+<rect x="56" y="150" width="96" height="50" class="win"/><rect x="56" y="139" width="48" height="11" class="tab"/>
+<rect x="70" y="222" width="96" height="50" class="win"/><rect x="70" y="211" width="48" height="11" class="tab"/>
+<rect x="56" y="294" width="96" height="40" class="win"/><rect x="56" y="283" width="48" height="11" class="tab"/>
+<text x="56" y="362" font-size="13" class="sub">windows</text>
+
+<line x1="176" y1="240" x2="214" y2="240" class="line" marker-end="url(#a)"/>
+<rect x="218" y="180" width="110" height="120" rx="6" class="box"/>
+<text x="273" y="226" font-size="14" font-weight="700" text-anchor="middle" class="title">Back</text>
+<text x="273" y="244" font-size="14" font-weight="700" text-anchor="middle" class="title">buffer</text>
+<text x="273" y="264" font-size="12" text-anchor="middle" class="sub">RAM, B_RGBA32</text>
+
+<line x1="332" y1="240" x2="352" y2="240" class="line" marker-end="url(#a)"/>
+<rect x="356" y="180" width="86" height="120" rx="6" class="vram"/>
+<text x="399" y="226" font-size="14" font-weight="700" text-anchor="middle" class="title">Front</text>
+<text x="399" y="244" font-size="14" font-weight="700" text-anchor="middle" class="title">buffer</text>
+<text x="399" y="264" font-size="12" text-anchor="middle" class="sub">VRAM</text>
+
+<g font-size="13" class="sub">
+  <text x="46" y="394">Windows draw straight into the back buffer,</text>
+  <text x="46" y="412">clipped to what can be seen. Moving a window</text>
+  <text x="46" y="430">uncovers others, and they have to redraw.</text>
+</g>
+
+<!-- ON -->
+<rect x="474" y="88" width="458" height="356" rx="10" class="on"/>
+<text x="492" y="116" font-size="17" font-weight="700" class="title">On</text>
+
+<rect x="498" y="150" width="80" height="44" class="win"/><rect x="498" y="140" width="40" height="10" class="tab"/>
+<rect x="498" y="220" width="80" height="44" class="win"/><rect x="498" y="210" width="40" height="10" class="tab"/>
+<rect x="498" y="290" width="80" height="34" class="win"/><rect x="498" y="280" width="40" height="10" class="tab"/>
+<text x="498" y="352" font-size="13" class="sub">windows</text>
+
+<line x1="580" y1="172" x2="598" y2="172" class="line" marker-end="url(#a)"/>
+<line x1="580" y1="242" x2="598" y2="242" class="line" marker-end="url(#a)"/>
+<line x1="580" y1="307" x2="598" y2="307" class="line" marker-end="url(#a)"/>
+<rect x="602" y="152" width="74" height="40" rx="4" class="buf"/>
+<rect x="602" y="222" width="74" height="40" rx="4" class="buf"/>
+<rect x="602" y="287" width="74" height="40" rx="4" class="buf"/>
+<text x="639" y="176" font-size="11" text-anchor="middle" class="title">buffer</text>
+<text x="639" y="246" font-size="11" text-anchor="middle" class="title">buffer</text>
+<text x="639" y="311" font-size="11" text-anchor="middle" class="title">buffer</text>
+<text x="602" y="352" font-size="13" class="sub">window buffers</text>
+
+<line x1="678" y1="172" x2="702" y2="225" class="line"/>
+<line x1="678" y1="242" x2="702" y2="242" class="line"/>
+<line x1="678" y1="307" x2="702" y2="259" class="line"/>
+<rect x="704" y="196" width="96" height="92" rx="6" class="comp"/>
+<text x="752" y="232" font-size="13" font-weight="700" text-anchor="middle" class="title">Compositor</text>
+<text x="752" y="250" font-size="12" text-anchor="middle" class="sub">back to front,</text>
+<text x="752" y="266" font-size="12" text-anchor="middle" class="sub">shadows, corners</text>
+
+<line x1="802" y1="242" x2="816" y2="242" class="line" marker-end="url(#a)"/>
+<rect x="820" y="196" width="50" height="92" rx="5" class="box"/>
+<text x="845" y="238" font-size="11" font-weight="700" text-anchor="middle" class="title">Back</text>
+<text x="845" y="252" font-size="11" text-anchor="middle" class="sub">buffer</text>
+<line x1="872" y1="242" x2="880" y2="242" class="line" marker-end="url(#a)"/>
+<rect x="884" y="196" width="40" height="92" rx="5" class="vram"/>
+<text x="904" y="238" font-size="11" font-weight="700" text-anchor="middle" class="title">Front</text>
+<text x="904" y="252" font-size="11" text-anchor="middle" class="sub">VRAM</text>
+
+<!-- direct window -->
+<rect x="704" y="318" width="96" height="40" rx="5" class="direct"/>
+<text x="752" y="336" font-size="11" font-weight="700" text-anchor="middle" class="warn">BDirectWindow</text>
+<text x="752" y="351" font-size="11" text-anchor="middle" class="sub">games, SDL2</text>
+<path d="M802 338 H904 V292" class="warnline" marker-end="url(#w)"/>
+
+<g font-size="13" class="sub">
+  <text x="492" y="394">Moving or raising a window is recomposited from the</text>
+  <text x="492" y="412">buffers: no application redraws. A direct window still</text>
+  <text x="492" y="430">draws to the screen, and the compositor leaves it alone.</text>
+</g>
+
+<!-- bottom -->
+<rect x="28" y="460" width="904" height="118" rx="8" class="box"/>
+<text x="46" y="488" font-size="15" font-weight="700" class="title">Which one runs is decided when app_server starts</text>
+<g font-size="13" class="sub">
+  <text x="46" y="512">It runs only when all three hold: the setting is on (Appearance, Compositor tab; off by default),</text>
+  <text x="46" y="531">the screen has a back buffer (HWInterface::IsDoubleBuffered(): VESA, framebuffer and the native drivers do;</text>
+  <text x="46" y="550">the remote and HTML5 interfaces don't), and the system isn't in safe mode. Otherwise Desktop::fCompositor</text>
+  <text x="46" y="569">is NULL, no window gets a buffer, and every compositor branch falls through to the code that runs today.</text>
+</g>
+</svg>

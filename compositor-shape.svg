@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" role="img" aria-label="A window's shape, as the compositor sees it. The opaque region is copied from the window's buffer. The edge region, the pixels of a rounded corner that the outline only partly covers, is blended using a coverage table for each radius up to 16 pixels, sampled 8 by 8 per pixel. The shadow frame reaches 15 pixels around the window and is offset 4 pixels down; the shadow is a gaussian blur of the outline with sigma 6, drawn at alpha 96, or as a lighter glow at alpha 160 on a dark theme. For a window with B_TRANSPARENT_WINDOW, its content region is blended by each pixel's own alpha. A click on a corner pixel less than half covered by the outline, or on a pixel of a transparent window whose alpha is 0, goes to what is behind.">
+<style>
+  .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
+  .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
+  .desk{fill:#DCE3E2}
+  .shadow1{fill:#132020;fill-opacity:0.07} .shadow2{fill:#132020;fill-opacity:0.10} .shadow3{fill:#132020;fill-opacity:0.14}
+  .opaque{fill:#BFE3DD;stroke:#0E6A62;stroke-width:1.6}
+  .tab{fill:#FFD43B;stroke:#3B4A49;stroke-width:1.2}
+  .edge{fill:#E05A47;fill-opacity:0.55}
+  .content{fill:#D5DFF2;stroke:#3B5B92;stroke-width:1.4;stroke-dasharray:5 3}
+  .frame{fill:none;stroke:#6A7978;stroke-width:1.3;stroke-dasharray:4 4}
+  .line{stroke:#6A7978;stroke-width:1.3;fill:none}
+  .px{stroke:#3B4A49;stroke-width:0.6}
+  .pxon{fill:#BFE3DD} .pxoff{fill:#FFFFFF} .pxhalf{fill:#E05A47;fill-opacity:0.55}
+  .key1{fill:#BFE3DD;stroke:#0E6A62} .key2{fill:#E05A47;fill-opacity:0.55} .key3{fill:#132020;fill-opacity:0.14} .key4{fill:#D5DFF2;stroke:#3B5B92}
+  @media (prefers-color-scheme:dark){
+    .panel{fill:#0E1515} .title{fill:#E3EAE9} .sub{fill:#ADBCBA} .muted{fill:#7C8C8A}
+    .box{fill:#121B1B;stroke:#3A4746}
+    .desk{fill:#1A2424}
+    .shadow1{fill:#000000;fill-opacity:0.18} .shadow2{fill:#000000;fill-opacity:0.25} .shadow3{fill:#000000;fill-opacity:0.34}
+    .opaque{fill:#1F4A44;stroke:#4FB6AA}
+    .tab{fill:#C9A227;stroke:#ADBCBA}
+    .edge{fill:#F08A8A;fill-opacity:0.6}
+    .content{fill:#24365A;stroke:#7F9FD6}
+    .frame{stroke:#7C8C8A} .line{stroke:#7C8C8A}
+    .px{stroke:#ADBCBA} .pxon{fill:#1F4A44} .pxoff{fill:#121B1B} .pxhalf{fill:#F08A8A;fill-opacity:0.6}
+    .key1{fill:#1F4A44;stroke:#4FB6AA} .key2{fill:#F08A8A;fill-opacity:0.6} .key3{fill:#000000;fill-opacity:0.34} .key4{fill:#24365A;stroke:#7F9FD6}
+  }
+  text{font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+</style>
+
+<rect width="960" height="560" class="panel"/>
+<text x="28" y="40" font-size="23" font-weight="700" class="title">A window's shape</text>
+<text x="28" y="64" font-size="15" class="sub">WindowShape tells the compositor which pixels to copy, which to blend, and where the shadow falls.</text>
+
+<!-- desktop area -->
+<rect x="28" y="88" width="520" height="440" rx="8" class="desk"/>
+
+<!-- shadow, offset 4 down, 15 around -->
+<rect x="72" y="138" width="420" height="356" rx="22" class="shadow1"/>
+<rect x="80" y="146" width="404" height="340" rx="18" class="shadow2"/>
+<rect x="88" y="154" width="388" height="324" rx="14" class="shadow3"/>
+<rect x="72" y="126" width="420" height="372" class="frame"/>
+
+<!-- window: tab across the top with rounded top corners, frame -->
+<path d="M102 150 Q102 136 116 136 H448 Q462 136 462 150 V470 H102 Z" class="opaque"/>
+<path d="M102 150 Q102 136 116 136 H448 Q462 136 462 150 V164 H102 Z" class="tab"/>
+<!-- edge pixels at the two rounded corners -->
+<path d="M102 152 Q102 136 118 136 H122 V140 H112 Q106 142 106 150 V152 Z" class="edge"/>
+<path d="M462 152 Q462 136 446 136 H442 V140 H452 Q458 142 458 150 V152 Z" class="edge"/>
+<!-- content region -->
+<rect x="110" y="172" width="344" height="290" class="content"/>
+<text x="282" y="312" font-size="14" font-weight="700" text-anchor="middle" class="title">content region</text>
+<text x="282" y="332" font-size="12" text-anchor="middle" class="sub">with B_TRANSPARENT_WINDOW: blended</text>
+<text x="282" y="348" font-size="12" text-anchor="middle" class="sub">by each pixel's alpha; otherwise opaque</text>
+<text x="282" y="155" font-size="13" font-weight="700" text-anchor="middle" class="title">tab</text>
+
+<!-- callouts -->
+<line x1="104" y1="140" x2="70" y2="106" class="line"/>
+<text x="40" y="102" font-size="12" class="sub">edge: blended corner pixels</text>
+<text x="72" y="516" font-size="12" class="sub">dashed grey: the shadow frame, 15 px round and 4 px down</text>
+
+<!-- right column: corner zoom -->
+<rect x="572" y="88" width="360" height="248" rx="8" class="box"/>
+<text x="590" y="114" font-size="15" font-weight="700" class="title">A rounded corner, close up</text>
+<g transform="translate(596,130)">
+  <!-- 8x8 pixel grid of a corner, radius about 6 -->
+  <g class="px">
+    <rect x="0" y="0" width="22" height="22" class="pxoff"/><rect x="22" y="0" width="22" height="22" class="pxoff"/><rect x="44" y="0" width="22" height="22" class="pxhalf"/><rect x="66" y="0" width="22" height="22" class="pxhalf"/><rect x="88" y="0" width="22" height="22" class="pxon"/><rect x="110" y="0" width="22" height="22" class="pxon"/><rect x="132" y="0" width="22" height="22" class="pxon"/><rect x="154" y="0" width="22" height="22" class="pxon"/>
+    <rect x="0" y="22" width="22" height="22" class="pxoff"/><rect x="22" y="22" width="22" height="22" class="pxhalf"/><rect x="44" y="22" width="22" height="22" class="pxon"/><rect x="66" y="22" width="22" height="22" class="pxon"/><rect x="88" y="22" width="22" height="22" class="pxon"/><rect x="110" y="22" width="22" height="22" class="pxon"/><rect x="132" y="22" width="22" height="22" class="pxon"/><rect x="154" y="22" width="22" height="22" class="pxon"/>
+    <rect x="0" y="44" width="22" height="22" class="pxhalf"/><rect x="22" y="44" width="22" height="22" class="pxon"/><rect x="44" y="44" width="22" height="22" class="pxon"/><rect x="66" y="44" width="22" height="22" class="pxon"/><rect x="88" y="44" width="22" height="22" class="pxon"/><rect x="110" y="44" width="22" height="22" class="pxon"/><rect x="132" y="44" width="22" height="22" class="pxon"/><rect x="154" y="44" width="22" height="22" class="pxon"/>
+    <rect x="0" y="66" width="22" height="22" class="pxhalf"/><rect x="22" y="66" width="22" height="22" class="pxon"/><rect x="44" y="66" width="22" height="22" class="pxon"/><rect x="66" y="66" width="22" height="22" class="pxon"/><rect x="88" y="66" width="22" height="22" class="pxon"/><rect x="110" y="66" width="22" height="22" class="pxon"/><rect x="132" y="66" width="22" height="22" class="pxon"/><rect x="154" y="66" width="22" height="22" class="pxon"/>
+    <rect x="0" y="88" width="22" height="22" class="pxon"/><rect x="22" y="88" width="22" height="22" class="pxon"/><rect x="44" y="88" width="22" height="22" class="pxon"/><rect x="66" y="88" width="22" height="22" class="pxon"/><rect x="88" y="88" width="22" height="22" class="pxon"/><rect x="110" y="88" width="22" height="22" class="pxon"/><rect x="132" y="88" width="22" height="22" class="pxon"/><rect x="154" y="88" width="22" height="22" class="pxon"/>
+  </g>
+  <path d="M0 110 V66 Q0 0 66 0 H176" fill="none" class="line" stroke-width="2"/>
+</g>
+<g font-size="12" class="sub">
+  <text x="784" y="148">white: outside, the</text>
+  <text x="784" y="164">desktop shows</text>
+  <text x="784" y="190">red: partly covered,</text>
+  <text x="784" y="206">blended by a coverage</text>
+  <text x="784" y="222">table (8 × 8 samples</text>
+  <text x="784" y="238">a pixel, radius ≤ 16)</text>
+  <text x="784" y="264">green: inside, copied</text>
+</g>
+<text x="590" y="294" font-size="12" class="sub">A click on a pixel less than half covered goes to</text>
+<text x="590" y="310" font-size="12" class="sub">the window behind.</text>
+<text x="590" y="328" font-size="12" class="muted">Decorators opt in with RoundedDecorator.</text>
+
+<!-- legend -->
+<rect x="572" y="350" width="360" height="178" rx="8" class="box"/>
+<text x="590" y="376" font-size="15" font-weight="700" class="title">How each part is drawn</text>
+<g font-size="12" class="sub">
+  <rect x="590" y="390" width="16" height="16" class="key1"/><text x="614" y="403">opaque region: copied (or blended while dragged)</text>
+  <rect x="590" y="416" width="16" height="16" class="key2"/><text x="614" y="429">edge region: blended by coverage</text>
+  <rect x="590" y="442" width="16" height="16" class="key3"/><text x="614" y="455">shadow: gaussian, sigma 6, alpha 96;</text>
+  <text x="614" y="471">a glow at alpha 160 on dark themes</text>
+  <rect x="590" y="484" width="16" height="16" class="key4"/><text x="614" y="497">transparent content: blended by pixel alpha;</text>
+  <text x="614" y="513">alpha 0 lets clicks through</text>
+</g>
+</svg>
