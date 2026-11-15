@@ -1,7 +1,7 @@
 # The composited app_server: design
 
-Status: **under review**, 2026-11-13. Owner: Ian Dumych. Proposal and discussion:
-RenkuOS/Source#378. The code is the PR series #330–#341 and #377.
+Status: **under review**, 2026-11-14. Owner: Ian Dumych. Proposal and discussion:
+RenkuOS/Source#378. The code is the PR series #330–#341, #377 and #435.
 
 Code references are against that series. Paths without a directory are in `src/servers/app/`.
 
@@ -67,20 +67,25 @@ the workspace or the screen mode changes (`Compositor::SceneChanged()`).
    the window's buffer, as today but into the buffer. The changed area goes to
    `Compositor::Composite()`, which adds it to the pending damage under `fDamageLock` and
    wakes the compositor thread, once per frame.
-2. The compositor thread (`B_DISPLAY_PRIORITY`) waits in `_WaitForFrame()`: for the vertical
-   retrace where the driver has `WaitForRetrace()`, otherwise until 16.7 ms after the last
-   frame. It logs which one it uses at startup ("compositor paced by …").
-3. It takes the damage and composites it with the window lock held for reading. That's the
-   same lock drawing commands take, so a frame never shows a window half moved.
-4. `HWInterface::InvalidateRegion()` copies the damaged area from the back buffer to the front
-   buffer, as today.
+2. The compositor thread (`B_DISPLAY_PRIORITY`) takes the damage and composites it into the
+   back buffer with the window lock held for reading. That's the same lock drawing commands
+   take, so a frame never shows a window half moved.
+3. It waits in `_WaitForFrame()`: for the vertical retrace where the driver has
+   `WaitForRetrace()`, otherwise until 16.7 ms after the last frame. It logs which one it uses
+   at startup ("compositor paced by …").
+4. `_Present()` copies the damaged area from the back buffer to the front buffer with
+   `HWInterface::InvalidateRegion()`, as today, without the window lock.
 
-**Latency.** Drawing reaches the screen up to one frame (about 16.7 ms) later than today.
-Direct windows are exempt (§8).
+Building a frame takes longer than the vertical blank lasts. When the frame was built after
+the retrace, the scanout overtook it near the top of the screen, which tore on real hardware.
+Built first, only the copy runs in the blank, and it stays ahead of the scanout. Without a
+retrace, the frame is built after the timer and copied at once.
 
-**Flushes.** Two things need the screen up to date at once, and call `Flush()` or
-`FlushLocked()`: reading the screen back (screenshots, `BScreen::ReadBitmap()`), and a direct
-window about to draw.
+**Latency.** Drawing reaches the screen up to one frame (about 16.7 ms) later than today,
+direct windows included.
+
+**Flushes.** Reading the screen back (screenshots, `BScreen::ReadBitmap()`) needs it up to date
+at once, and calls `Flush()`.
 
 ---
 
@@ -125,8 +130,7 @@ the back:
 4. the rest is copied a row at a time with `memcpy`, or blended with the window's alpha while
    it's dragged.
 
-Last, every direct window's on-screen content is taken out of the area, and the rest is copied
-to the front buffer (§8).
+Last, the area is copied to the front buffer (§3).
 
 ---
 
@@ -144,6 +148,9 @@ to the front buffer (§8).
   redraws in full when it can be seen again.
 - A visible window costs width × height × 4 bytes: about 0.5 MB for 400 × 300, 8 MB for
   1920 × 1080, and 33 MB for 3840 × 2160.
+- A window with direct access has a buffer laid out like the screen (§8): an overcommitting
+  area of the screen's size, of which only the pages the window covers are used. That is a
+  little more than its own pixels, as each row of the window touches whole pages.
 
 On x86_gcc2h, the buffers share `app_server`'s 2 GB of address space with everything else it
 has. A busy desktop at a high resolution could run it out. The compositor stays off by default
@@ -167,21 +174,35 @@ They're stored with the other desktop settings. Appearance's Compositor tab sets
 
 ## 8. Special cases
 
-**`BDirectWindow`.** A direct window draws straight into the front buffer, so its window buffer
-is stale. `ServerWindow::HandleDirectConnection()` flushes pending damage before the
-application starts drawing, and gives it `Window::GetOnScreenContentRegion()` as its clipping.
-The compositor never copies to the part of the screen a direct window draws to. A shadow,
-rounded corner or see-through window over it is left out there, rather than overwriting what
-the application drew. SDL2's Haiku backend is a `BDirectWindow`, so most ported games and
-emulators take this path.
+**`BDirectWindow`.** A direct window draws to the frame buffer it's given, rather than through
+app_server. `BGLView` uses it, and so do games and emulators. With the compositor on, it
+is given its own window buffer instead of the screen (#435), and the compositor puts that on
+the screen like any other window: in the blank, under other windows and their shadows, moved
+without copying anything on the screen, and with the cursor drawn normally over it.
 
-What remains: the parts of a front window's frame next to the direct window, such as a corner's
-blended pixels, are blended over the direct window's stale buffer. A see-through window dragged
-over it shows that stale content until the drag ends.
+- **Same coordinates as without the compositor.** Its buffer is laid out like the screen,
+  starting at the screen's left top. So `ServerWindow::HandleDirectConnection()` hands the
+  application the same `direct_buffer_info` as without compositing: screen coordinates, its
+  window's frame, and its content as the clipping, with the buffer's area to clone.
+  `DirectWindowInfo::SetState()` takes that area explicitly, since `Bits()` points outside
+  it for an ordinary window buffer. An application that places itself by its window's frame
+  rather than `window_bounds` still draws in the right place.
+- **Moving.** `WindowBuffer::SetFrame()` moves the window's pixels inside the buffer, as
+  app_server moves them on the screen without compositing. Only what comes into view from off
+  the screen is drawn again.
+- **Every frame.** The application doesn't say when it has drawn, so while it may draw, the
+  compositor puts its content on the screen every frame.
+
+**Changed after hardware testing.** The first version left a direct window drawing to the
+screen, and left its area out of every copy. On an AMD A4-9120C Chromebook (radeon_hd, with a
+retrace), that tore and left after-images when windows were dragged over GLTeapot or it was
+moved, never showed its menu bar, and lost the software cursor over it. Fixing each case on the
+screen side led to a series of special cases, so the drawing was moved into the compositor
+instead.
 
 **Video overlays.** An overlay shows video wherever its colour key is in the front buffer. A
 shadow or see-through window over that area changes the key's pixels, so the video doesn't show
-there. This is cosmetic. It's untested, because no VM tested so far has overlays.
+there. This is cosmetic. It's untested, because no machine tested so far has overlays.
 
 **`BWindowScreen`.** When it takes the screen, `Compositor::ScreenTaken()` holds off; on
 release, `ScreenReleased()` recomposites everything.
@@ -273,6 +294,8 @@ Known costs:
   full-screen 1920 × 1080 game at 60 fps would pay about 500 MB/s of extra copying.
 - Blending is scalar C++, with no SIMD. Shadows are recomputed for each damaged pixel they
   cover.
+- A window with direct access is composited every frame while it's connected, whether or not
+  it drew.
 - Nothing is measured above 1024 × 768, or on slow CPUs such as Atom or Tegra 2.
 
 ---
@@ -296,21 +319,28 @@ and stands alone.
 - every window look, stacks, `BDirectWindow` and `BWindowScreen`, mode and workspace changes,
   live decorator switching, and the options on 13 themes;
 - every part builds and boots with the compositor off in CI (x86_64 and x86_gcc2h);
-- a direct window under a moving window's shadow: on the code before the fix, the shadow showed
-  the window's stale buffer in 12 of 16 screenshots; with it, in none of 17;
+- direct windows (#435): GLTeapot spinning and stopped, dragged and resized and with
+  windows dragged over it; a `BDirectWindow` test that fills its clip list, and one that
+  places itself by `Frame()` alone, moved partly off the screen and covered;
 - workspaces: switching to an empty workspace took `app_server` from five window buffers
   (4.6 MB) to two (3.1 MB), and back; windows redrew on return;
 - transparent windows with native test windows and a Qt 6 window.
 
+**Done on real hardware:** an Acer Chromebook with an AMD A4-9120C (Stoney Ridge, 1366 × 768,
+60 Hz), on radeon_hd with RenkuOS/Source#420 and the retrace from #421:
+
+- pacing by the vertical retrace, with no tearing when dragging windows;
+- memory with six 1000 × 700 windows on each of four workspaces, the direct-window test, and
+  the transparency tests;
+- GLTeapot, Prince of Persia (SDLPoP, SDL2) and a video, each with windows dragged over it.
+
 **Not done yet:**
 
-- real hardware, including one machine whose driver has a retrace (for example `radeon_hd` or
-  `intel_extreme`);
 - 1920 × 1080 or larger, with `app_server`'s memory measured on a busy desktop with several
   workspaces;
 - x86_gcc2h with the compositor on;
-- an SDL2 game, and video with overlays;
-- the transparency tests on real hardware.
+- video with overlays, which no machine tested so far has;
+- a second machine, and other drivers with a retrace.
 
 ---
 
@@ -331,3 +361,4 @@ and stands alone.
 | Glow on dark themes | #340 | `WindowShape.*`, `Compositor.cpp` |
 | See-through dragging | #341 | `decorator/DefaultWindowBehaviour.cpp`, `Compositor.*`, Appearance |
 | Transparent windows | #377 | `Window.*`, `View.cpp`, `Compositor.*`, `InterfaceDefs.*`, `headers/os/interface/Window.h`, `Window.dox` |
+| Direct windows through the compositor | #435 | `ServerWindow.cpp`, `DirectWindowInfo.*`, `WindowBuffer.*`, `Window.*`, `Compositor.*` |

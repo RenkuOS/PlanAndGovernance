@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="How drawing reaches the screen with the compositor off and on. Off, as today: windows draw straight into app_server's back buffer, clipped to what can be seen, and changed areas are copied to the front buffer. A window that moves uncovers others, which must redraw. On: each window draws into a window buffer of its own. The compositor thread builds the back buffer from those buffers, back to front, with shadows and rounded corners, then copies changed areas to the front buffer. Moving or raising a window is recomposited from the buffers without any application redrawing. A BDirectWindow still draws straight into the front buffer, and the compositor leaves its area alone. Whether the compositor runs is decided when app_server starts.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 600" width="960" height="600" role="img" aria-label="How drawing reaches the screen with the compositor off and on. Off, as today: windows draw straight into app_server's back buffer, clipped to what can be seen, and changed areas are copied to the front buffer. A window that moves uncovers others, which must redraw. On: each window draws into a window buffer of its own. The compositor thread builds the back buffer from those buffers, back to front, with shadows and rounded corners, then copies changed areas to the front buffer. Moving or raising a window is recomposited from the buffers without any application redrawing. A BDirectWindow, as used by games and OpenGL, also draws into its own buffer, which is laid out like the screen so that it keeps using screen coordinates. Whether the compositor runs is decided when app_server starts.">
 <style>
   .panel{fill:#F1F4F4} .title{fill:#132020} .sub{fill:#3B4A49} .muted{fill:#6A7978}
   .box{fill:#FFFFFF;stroke:#B4BFBE;stroke-width:1.2}
@@ -112,12 +112,12 @@
 <rect x="704" y="318" width="96" height="40" rx="5" class="direct"/>
 <text x="752" y="336" font-size="11" font-weight="700" text-anchor="middle" class="warn">BDirectWindow</text>
 <text x="752" y="351" font-size="11" text-anchor="middle" class="sub">games, SDL2</text>
-<path d="M802 338 H904 V292" class="warnline" marker-end="url(#w)"/>
+<path d="M704 338 H648 V330" class="line" marker-end="url(#a)"/>
 
 <g font-size="13" class="sub">
   <text x="492" y="394">Moving or raising a window is recomposited from the</text>
-  <text x="492" y="412">buffers: no application redraws. A direct window still</text>
-  <text x="492" y="430">draws to the screen, and the compositor leaves it alone.</text>
+  <text x="492" y="412">buffers: no application redraws. A direct window draws</text>
+  <text x="492" y="430">into its buffer too, laid out like the screen.</text>
 </g>
 
 <!-- bottom -->
