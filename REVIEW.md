@@ -14,7 +14,7 @@ a policy surface larger than its codebase.
 
 ## Current state
 
-**As of 2026-11-07.** This section records what is actually true and mechanically enforced
+**As of 2026-11-25.** This section records what is actually true and mechanically enforced
 today. It is the part of this document you can rely on; everything after it is the standard
 we intend to reach.
 
@@ -43,9 +43,9 @@ protected. On every pull request the forge enforces:
 ### Who can approve and merge today
 
 An approval only counts if it comes from an account with **write** access. That is currently
-six accounts, all of them admins: `KevinAdams05`, `rainygirl`, `shaka444`, `tmtfx`,
-`atomozero`, and `RenkuOSAdmin`. Anyone else can review and comment, and that review is worth
-having, but it does not satisfy the gate.
+seven accounts, all of them admins: `KevinAdams05`, `rainygirl`, `shaka444`, `tmtfx`,
+`atomozero`, `dcbeckman`, and `RenkuOSAdmin`. Anyone else can review and comment, and that
+review is worth having, but it does not satisfy the gate.
 
 The project owner or a maintainer merges an approved, green pull request. Most contributors
 work from forks without write access, so they cannot merge their own changes.
@@ -61,8 +61,8 @@ The gaps, stated here so they are countable rather than discovered during an arg
   cannot vary by path. The gate is **1** for every change, so the graduated table in §3 and
   the two-approval rule in §4 are obligations a reviewer carries, not gates the forge
   applies. This is deliberate: raising the global count to 2 would apply equally to a typo
-  fix, and with six eligible approvers and the author excluded, that means two of the
-  remaining five for every change.
+  fix, and with seven eligible approvers and the author excluded, that means two of the
+  remaining six for every change.
 - **Reviewer assignment.** `MAINTAINERS` and `CODEOWNERS` do not exist, so nothing is
   auto-assigned and no owner review is required. §5 describes the intended mechanism, not a
   running one.
